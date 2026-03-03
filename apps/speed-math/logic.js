@@ -1,6 +1,5 @@
 // ─────────────────────────────────────────────
 // Question Bank  –  tables 11–20 × 1–10
-// Fully expanded so every product is explicit.
 // ─────────────────────────────────────────────
 const QUESTIONS = (() => {
   const q = [];
@@ -26,53 +25,44 @@ function shuffle(arr) {
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-/**
- * Build 3 plausible distractors for a question.
- *  1. Adjacent products in the same table (±1..±3 on b, capped at 1–10)
- *  2. Nearby trap values (±5, ±10, ±11)
- */
 function generateOptions({ a, b, answer }) {
   const pool = new Set();
-
   for (let db = -3; db <= 3; db++) {
     if (db === 0) continue;
     const nb = b + db;
     if (nb >= 1 && nb <= 10) pool.add(a * nb);
   }
-
   [-10, 10, -5, 5, -11, 11, -1, 1].forEach(d => {
     const v = answer + d;
     if (v > 0) pool.add(v);
   });
-
   pool.delete(answer);
   const candidates = shuffle([...pool].filter(v => v > 0));
   const wrong = candidates.slice(0, 3);
-
   for (let i = 1; wrong.length < 3; i++) {
     const v = answer + i * 7;
     if (!wrong.includes(v) && v !== answer) wrong.push(v);
   }
-
   return shuffle([answer, ...wrong]);
 }
 
 // ─────────────────────────────────────────────
-// Sound Manager  (Web Audio API, no files needed)
+// Shared AudioContext
+// ─────────────────────────────────────────────
+let _audioCtx = null;
+function getAudioCtx() {
+  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (_audioCtx.state === 'suspended') _audioCtx.resume();
+  return _audioCtx;
+}
+
+// ─────────────────────────────────────────────
+// Sound Effects
 // ─────────────────────────────────────────────
 const SFX = (() => {
-  let ctx = null;
-
-  function ac() {
-    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-    // Resume if suspended (browser autoplay policy)
-    if (ctx.state === 'suspended') ctx.resume();
-    return ctx;
-  }
-
-  function tone({ freq = 440, type = 'sine', dur = 0.12, vol = 0.28, delay = 0, ramp = true }) {
+  function tone({ freq = 440, type = 'sine', dur = 0.12, vol = 0.28, delay = 0 }) {
     try {
-      const c = ac();
+      const c = getAudioCtx();
       const osc = c.createOscillator();
       const gain = c.createGain();
       osc.connect(gain);
@@ -80,51 +70,38 @@ const SFX = (() => {
       osc.type = type;
       osc.frequency.setValueAtTime(freq, c.currentTime + delay);
       gain.gain.setValueAtTime(vol, c.currentTime + delay);
-      if (ramp) gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + delay + dur);
+      gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + delay + dur);
       osc.start(c.currentTime + delay);
       osc.stop(c.currentTime + delay + dur + 0.02);
     } catch (_) {}
   }
 
   return {
-    // Countdown ticks — each number has a rising pitch
     countTick(n) {
       const freqs = { 3: 440, 2: 554, 1: 659 };
       tone({ freq: freqs[n] ?? 440, dur: 0.1, vol: 0.3 });
     },
-
-    // "GO!" — bright ascending arpeggio
     go() {
       [523, 659, 784, 1047].forEach((f, i) =>
         tone({ freq: f, dur: 0.15, vol: 0.28, delay: i * 0.075 })
       );
     },
-
-    // Correct — two rising chime notes
     correct() {
       tone({ freq: 523, dur: 0.1,  vol: 0.3 });
       tone({ freq: 880, dur: 0.22, vol: 0.3, delay: 0.09 });
     },
-
-    // Wrong — short descending buzz
     wrong() {
       tone({ freq: 220, type: 'sawtooth', dur: 0.12, vol: 0.18 });
       tone({ freq: 150, type: 'sawtooth', dur: 0.18, vol: 0.18, delay: 0.1 });
     },
-
-    // Last-10-seconds tick — sharp click
     urgentTick() {
       tone({ freq: 1047, dur: 0.04, vol: 0.18 });
     },
-
-    // Time's up — descending 4-note drop
     timeUp() {
       [784, 659, 523, 392].forEach((f, i) =>
         tone({ freq: f, dur: 0.22, vol: 0.3, delay: i * 0.11 })
       );
     },
-
-    // Score reveal fanfare — quick ascending sweep
     fanfare() {
       [392, 494, 587, 740, 988].forEach((f, i) =>
         tone({ freq: f, dur: 0.22, vol: 0.25, delay: i * 0.09 })
@@ -134,11 +111,104 @@ const SFX = (() => {
 })();
 
 // ─────────────────────────────────────────────
+// Background Music
+// Upbeat looping melody (C major pentatonic)
+// ─────────────────────────────────────────────
+const Music = (() => {
+  // [frequency Hz, duration seconds]  (0 Hz = rest)
+  const MELODY = [
+    [523, 0.25], [659, 0.25], [784, 0.25], [880, 0.25],  // C5 E5 G5 A5
+    [784, 0.25], [659, 0.25], [523, 0.4],  [0,   0.25],  // G5 E5 C5 --
+    [392, 0.25], [523, 0.25], [659, 0.25], [784, 0.25],  // G4 C5 E5 G5
+    [659, 0.25], [523, 0.25], [392, 0.5],  [0,   0.3],   // E5 C5 G4 --
+    [523, 0.2],  [659, 0.2],  [784, 0.2],  [880, 0.2],   // faster run up
+    [1047,0.4],  [880, 0.2],  [784, 0.4],                // C6 A5 G5
+    [659, 0.2],  [784, 0.2],  [659, 0.2],  [523, 0.6],   // resolve
+    [0,   0.3],                                           // breathe
+  ];
+
+  const BASS = [
+    [130, 0.5], [130, 0.5], [147, 0.5], [130, 0.5],  // C3 C3 D3 C3
+    [110, 0.5], [98,  0.5], [110, 0.5], [130, 0.5],  // A2 G2 A2 C3
+    [130, 0.5], [130, 0.5], [147, 0.5], [130, 0.5],  // repeat
+    [110, 0.5], [98,  0.5], [110, 1.0],               // resolve longer
+  ];
+
+  const MELODY_DUR = MELODY.reduce((s, [, d]) => s + d, 0);
+  const BASS_DUR   = BASS.reduce((s, [, d]) => s + d, 0);
+  // Both intentionally equal — verify: MELODY_DUR ≈ BASS_DUR ≈ 8.0s
+
+  let playing = false;
+  let masterGain = null;
+  let loopTimer = null;
+
+  function scheduleTrack(notes, type, vol, startTime) {
+    const c = getAudioCtx();
+    let t = startTime;
+    for (const [freq, dur] of notes) {
+      if (freq > 0) {
+        const osc = c.createOscillator();
+        const g   = c.createGain();
+        osc.connect(g);
+        g.connect(masterGain);
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, t);
+        g.gain.setValueAtTime(vol, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + dur * 0.82);
+        osc.start(t);
+        osc.stop(t + dur + 0.01);
+      }
+      t += dur;
+    }
+  }
+
+  function loop() {
+    if (!playing) return;
+    const c = getAudioCtx();
+    const now = c.currentTime;
+    scheduleTrack(MELODY, 'sine',     0.18, now);
+    scheduleTrack(BASS,   'triangle', 0.1,  now);
+    // Schedule next loop slightly before this one ends
+    loopTimer = setTimeout(loop, (MELODY_DUR - 0.15) * 1000);
+  }
+
+  return {
+    start() {
+      if (playing) return;
+      playing = true;
+      const c = getAudioCtx();
+      masterGain = c.createGain();
+      masterGain.gain.value = 1.0;
+      masterGain.connect(c.destination);
+      loop();
+    },
+    stop() {
+      if (!playing) return;
+      playing = false;
+      clearTimeout(loopTimer);
+      if (masterGain) {
+        try {
+          const c = getAudioCtx();
+          masterGain.gain.setValueAtTime(masterGain.gain.value, c.currentTime);
+          masterGain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.4);
+          setTimeout(() => { try { masterGain.disconnect(); } catch (_) {} masterGain = null; }, 500);
+        } catch (_) {}
+      }
+    },
+    toggle() {
+      if (playing) { this.stop(); return false; }
+      this.start(); return true;
+    },
+    isPlaying() { return playing; },
+  };
+})();
+
+// ─────────────────────────────────────────────
 // Alpine.js Component
 // ─────────────────────────────────────────────
 function gameApp() {
   return {
-    screen: 'name-entry', // name-entry | countdown | playing | score-reveal | leaderboard
+    screen: 'name-entry',
 
     nameInput: '',
     playerName: '',
@@ -152,13 +222,13 @@ function gameApp() {
     currentQ: null,
     options: [],
     selectedOption: null,
-    answerState: null,   // null | 'correct' | 'wrong'
+    answerState: null,
     locked: false,
 
     leaderboard: [],
     sessionEnded: false,
+    musicOn: true,
 
-    // ── init ─────────────────────────────────
     init() {
       try {
         const saved = localStorage.getItem('speedmath_lb');
@@ -167,11 +237,18 @@ function gameApp() {
     },
 
     // ── name entry ───────────────────────────
+    capitalizeName() {
+      if (this.nameInput.length > 0)
+        this.nameInput = this.nameInput.charAt(0).toUpperCase() + this.nameInput.slice(1);
+    },
+
     startGame() {
       const name = this.nameInput.trim();
       if (!name) return;
-      this.playerName = name;
+      this.playerName = name.charAt(0).toUpperCase() + name.slice(1);
       this.nameInput = '';
+      Music.start();
+      this.musicOn = true;
       this.screen = 'countdown';
       this.$nextTick(() => this.runCountdown());
     },
@@ -279,6 +356,11 @@ function gameApp() {
       setTimeout(() => SFX.fanfare(), 600);
     },
 
+    // ── music ─────────────────────────────────
+    toggleMusic() {
+      this.musicOn = Music.toggle();
+    },
+
     // ── session ──────────────────────────────
     viewLeaderboard() {
       this.sessionEnded = false;
@@ -297,9 +379,11 @@ function gameApp() {
 
     newGame() {
       clearInterval(this.timerInterval);
+      Music.stop();
       this.leaderboard = [];
       try { localStorage.removeItem('speedmath_lb'); } catch (_) {}
       this.sessionEnded = false;
+      this.musicOn = false;
       this.playerName = '';
       this.screen = 'name-entry';
     },

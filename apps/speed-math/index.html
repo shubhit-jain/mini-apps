@@ -10,7 +10,26 @@
   <script src="logic.js"></script>
 </head>
 <body>
+
+<!-- Animated background blobs -->
+<div class="bg-canvas" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+  <div class="blob blob-5"></div>
+</div>
+
 <div x-data="gameApp()" x-cloak>
+
+  <!-- Music toggle (always visible) -->
+  <button
+    x-show="screen !== 'name-entry'"
+    @click="toggleMusic"
+    class="music-btn"
+    :title="musicOn ? 'Mute music' : 'Play music'"
+    x-text="musicOn ? '🎵' : '🔇'"
+  ></button>
 
   <!-- ══════════════════════════════════════════════
        SCREEN: Name Entry
@@ -36,11 +55,13 @@
         <input
           x-model="nameInput"
           @keydown.enter="startGame"
+          @input="capitalizeName"
           type="text"
           class="name-input"
           placeholder="Your name…"
           maxlength="20"
           autocomplete="off"
+          autocapitalize="words"
           autofocus
         />
         <button @click="startGame" class="btn-p">Let's Go! ⚡</button>
@@ -146,7 +167,7 @@
       <!-- Score row -->
       <div class="flex items-center justify-between px-1">
         <span class="text-sm font-medium" style="color:var(--muted)">Score</span>
-        <span class="text-2xl font-black tabular-nums" x-text="score"></span>
+        <span class="font-black tabular-nums" style="font-size: 1.8rem" x-text="score"></span>
       </div>
     </div>
 
