@@ -1,3 +1,27 @@
+# Dependencies
 node_modules/
+
+# Environment / secrets — NEVER commit these
+.env
+.env.*
+.env.local
+.env.*.local
+
+# Private keys, certificates
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# macOS
 .DS_Store
+
+# Logs
 *.log
+npm-debug.log*

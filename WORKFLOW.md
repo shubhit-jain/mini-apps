@@ -5,6 +5,12 @@ A casual, growing collection of single-page web apps — each purpose-built and 
 Hosted by a lightweight Express server with live-reload for fast development.
 State lives in the browser (localStorage) or URL (for shareable/small state).
 
+## Security rules — this is a public repo
+- **Never commit secrets**: no API keys, tokens, passwords, or credentials
+- **No `.env` files**: use environment variables locally; `.env*` is gitignored
+- **No key/cert files**: `*.key`, `*.pem`, `*.cert`, `id_rsa*` are gitignored
+- All apps are fully client-side — if an app ever needs a secret, it goes through a backend proxy, never in the browser code
+
 ## Stack
 - **Server**: Node.js + Express (local dev only)
 - **Live reload**: livereload + connect-livereload + nodemon
