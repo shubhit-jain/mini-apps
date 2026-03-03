@@ -6,10 +6,11 @@ Hosted by a lightweight Express server with live-reload for fast development.
 State lives in the browser (localStorage) or URL (for shareable/small state).
 
 ## Stack
-- **Server**: Node.js + Express
+- **Server**: Node.js + Express (local dev only)
 - **Live reload**: livereload + connect-livereload + nodemon
 - **Styling/JS**: CDN imports (Tailwind, Alpine, etc.) — no build step
 - **Storage**: localStorage or URL params (no backend DB)
+- **Deployment**: GitHub Pages via `docs/` folder (static build)
 
 ## Project Structure
 ```
@@ -25,11 +26,20 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
         └── style.css     (if needed)
 ```
 
+## Dev Workflow
+1. `npm run dev` — start Express + live-reload at http://localhost:6767
+2. Create/edit apps under `apps/<name>/` — changes live-reload automatically
+
+## Deploy to GitHub Pages
+1. `npm run build` — regenerates `docs/` from current `apps/`
+2. Commit and push `docs/` to main
+3. GitHub Pages serves from `docs/` on main branch
+
 ## Adding a New App
 1. Create `apps/<name>/` directory
 2. Add `meta.json` with `title`, `description`, `emoji`
 3. Build `index.html`, `logic.js`, `style.css`
-4. App auto-appears on the home page
+4. App auto-appears on the home page (dev) and in the build (deploy)
 
 ## Completed
 - [x] Express server with live-reload (livereload + connect-livereload)
