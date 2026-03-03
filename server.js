@@ -5,7 +5,7 @@ const livereload = require('livereload');
 const connectLivereload = require('connect-livereload');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6767;
 
 // Live reload — watches public/ and apps/ for changes
 const lrServer = livereload.createServer();

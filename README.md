@@ -13,6 +13,6 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:6767](http://localhost:6767).
 
 Changes to any file in `public/` or `apps/` auto-refresh the browser.
