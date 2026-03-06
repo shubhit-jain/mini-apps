@@ -41,11 +41,20 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 2. Commit and push `docs/` to main
 3. GitHub Pages serves from `docs/` on main branch
 
+## Common UI Requirements (all apps)
+- **Shared base CSS**: `<link rel="stylesheet" href="../../shared/base.css" />` (first, before app's own CSS)
+  - `public/shared/base.css` holds structural-only styles; apps override colours in their own CSS
+  - `build.js` copies `public/shared/` → `docs/shared/` on every build
+- **Home nav logo**: fixed top-left, 36×36px square, links to `../../` (relative — works on GitHub Pages subdirectory)
+  - `<a href="../../" aria-label="Back to home" class="home-logo"><div class="home-logo-sq"></div></a>`
+  - Override `.home-logo` and `.home-logo-sq` colours in the app's own CSS to match its theme
+
 ## Adding a New App
 1. Create `apps/<name>/` directory
 2. Add `meta.json` with `title`, `description`, `emoji`
 3. Build `index.html`, `logic.js`, `style.css`
-4. App auto-appears on the home page (dev) and in the build (deploy)
+4. Add the home nav logo (see Common UI Requirements above)
+5. App auto-appears on the home page (dev) and in the build (deploy)
 
 ## Completed
 - [x] Express server with live-reload (livereload + connect-livereload)

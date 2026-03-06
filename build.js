@@ -49,9 +49,10 @@ const apps = fs.readdirSync(APPS_DIR, { withFileTypes: true })
 fs.rmSync(DOCS, { recursive: true, force: true });
 fs.mkdirSync(DOCS);
 
-// ── copy apps ─────────────────────────────────────────────────────────────────
+// ── copy apps + shared assets ─────────────────────────────────────────────────
 
 copyDir(APPS_DIR, path.join(DOCS, 'apps'));
+copyDir(path.join(ROOT, 'public', 'shared'), path.join(DOCS, 'shared'));
 
 // ── generate index.html ───────────────────────────────────────────────────────
 
@@ -82,13 +83,23 @@ const html = `<!DOCTYPE html>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared/base.css" />
   <style>
     body { font-family: 'Inter', sans-serif; }
     .card:hover .arrow { transform: translateX(4px); }
     .arrow { transition: transform 0.2s ease; }
+    /* home logo colour overrides */
+    .home-logo { background: #fff; border: 1.5px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .home-logo:hover { box-shadow: 0 2px 8px rgba(99,102,241,0.15); border-color: #a5b4fc; }
+    .home-logo-sq { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
+
+  <!-- Home nav logo -->
+  <a href="./" aria-label="Home" class="home-logo">
+    <div class="home-logo-sq"></div>
+  </a>
 
   <div class="max-w-3xl mx-auto px-6 py-16">
 

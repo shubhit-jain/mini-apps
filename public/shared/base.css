@@ -1,0 +1,25 @@
+/* ── Home nav logo ──────────────────────────────────────────────────────────
+   Structural shell only — colours/borders are overridden per-app in each
+   app's own style.css.
+   ────────────────────────────────────────────────────────────────────────── */
+
+.home-logo {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.home-logo-sq {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
