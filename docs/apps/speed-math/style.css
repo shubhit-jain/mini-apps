@@ -245,6 +245,16 @@ body {
   scrollbar-color: var(--border) transparent;
 }
 
+/* ── Home nav logo (colour overrides) ──────────── */
+
+.home-logo {
+  background: rgba(20, 20, 58, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid var(--border);
+}
+.home-logo:hover { border-color: var(--purple-lt); background: rgba(139,92,246,0.2); }
+.home-logo-sq { background: linear-gradient(135deg, #7c3aed, #06b6d4); }
+
 /* ── Music toggle button ────────────────────── */
 
 .music-btn {

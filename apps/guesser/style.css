@@ -1,0 +1,436 @@
+/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #080b14;
+  --surface:  #0f1625;
+  --surface2: #18213a;
+  --border:   #2a3550;
+  --green:    #22d36a;
+  --red:      #ff4466;
+  --orange:   #ffb344;
+  --text:     #e8f0ff;
+  --muted:    #6b7fa8;
+  --radius:   14px;
+}
+
+body {
+  background: radial-gradient(ellipse at 20% 0%, #1a0a2e 0%, #080b14 55%),
+              radial-gradient(ellipse at 80% 100%, #0a1a2e 0%, transparent 60%);
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-top: 68px;
+}
+
+/* ── Home Logo override ───────────────────────────────────────────────────── */
+.home-logo { text-decoration: none; }
+.home-logo-sq {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: 2px solid #3a2060;
+}
+
+/* ── Shared card ─────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: opacity .15s, transform .1s;
+  letter-spacing: .02em;
+}
+.btn-primary:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: .3; cursor: not-allowed; }
+
+.btn-ghost {
+  width: 100%;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.btn-ghost:hover { color: var(--text); border-color: #5b6d99; }
+
+/* ── Home Screen ─────────────────────────────────────────────────────────── */
+.game-title {
+  font-size: 3rem;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: -1px;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #a78bfa, #f472b6, #fb923c, #facc15);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.game-subtitle {
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+  margin-bottom: 24px;
+}
+.field-label {
+  display: block;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.text-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.text-input:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px #7c3aed28;
+}
+
+/* Category buttons — each gets its own selection color */
+.category-list { display: flex; flex-direction: column; gap: 10px; }
+.cat-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  text-align: left;
+}
+.cat-btn:hover { border-color: #4a5580; background: #131e35; }
+
+/* Hardware — indigo/violet */
+.cat-btn[data-key="hardware"].selected {
+  border-color: #818cf8;
+  background: #131832;
+  box-shadow: 0 0 14px #6366f140;
+}
+/* Supercars — rose/red */
+.cat-btn[data-key="supercars"].selected {
+  border-color: #fb7185;
+  background: #1f1020;
+  box-shadow: 0 0 14px #f43f5e40;
+}
+/* States — emerald/green */
+.cat-btn[data-key="states"].selected {
+  border-color: #34d399;
+  background: #0d1f1a;
+  box-shadow: 0 0 14px #10b98140;
+}
+
+.cat-emoji { font-size: 1.5rem; line-height: 1; }
+
+/* ── Game Screen ─────────────────────────────────────────────────────────── */
+.game-screen { display: flex; flex-direction: column; gap: 14px; }
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.score-badge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: .9rem;
+}
+.score-badge strong { color: var(--green); font-size: 1.05rem; }
+.q-counter { color: var(--muted); font-size: .85rem; }
+
+/* Timer */
+.timer-bar-wrap { display: flex; align-items: center; gap: 10px; }
+.timer-bar {
+  flex: 1;
+  height: 12px;
+  background: var(--surface2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.timer-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22d36a, #4ade80);
+  border-radius: 999px;
+  transition: width 1s linear, background .4s;
+}
+.timer-fill.warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.timer-fill.danger  { background: linear-gradient(90deg, #ef4444, #f97316); }
+.timer-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  min-width: 26px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Question card — colored top accent per category */
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  border-top-width: 3px;
+  padding: 24px 20px;
+  text-align: center;
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.game-screen[data-cat="hardware"]  .question-card { border-top-color: #818cf8; }
+.game-screen[data-cat="supercars"] .question-card { border-top-color: #fb7185; }
+.game-screen[data-cat="states"]    .question-card { border-top-color: #34d399; }
+
+.cat-badge {
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 999px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+.q-visual { font-size: 5rem; line-height: 1; }
+.q-clue {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  max-width: 380px;
+  color: var(--text);
+}
+
+/* State SVG */
+.state-visual { width: 170px; height: 170px; }
+.state-svg { width: 100%; height: 100%; overflow: visible; }
+.q-hint {
+  font-size: .85rem;
+  color: var(--muted);
+  font-style: italic;
+  max-width: 360px;
+  line-height: 1.45;
+}
+
+/* Answer area */
+.answer-area {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.answer-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--text);
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.game-screen[data-cat="hardware"]  .answer-input:focus { border-color: #818cf8; box-shadow: 0 0 0 3px #6366f128; }
+.game-screen[data-cat="supercars"] .answer-input:focus { border-color: #fb7185; box-shadow: 0 0 0 3px #f43f5e28; }
+.game-screen[data-cat="states"]    .answer-input:focus { border-color: #34d399; box-shadow: 0 0 0 3px #10b98128; }
+
+.answer-actions { display: flex; gap: 10px; }
+.btn-skip {
+  flex: 1;
+  background: var(--surface2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.btn-skip:hover { color: var(--text); border-color: #5b6d99; }
+
+.btn-submit {
+  flex: 2;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #fff;
+  transition: opacity .15s;
+}
+.game-screen[data-cat="hardware"]  .btn-submit { background: linear-gradient(135deg, #4f46e5, #818cf8); }
+.game-screen[data-cat="supercars"] .btn-submit { background: linear-gradient(135deg, #be123c, #f43f5e); }
+.game-screen[data-cat="states"]    .btn-submit { background: linear-gradient(135deg, #059669, #10b981); }
+.btn-submit:hover { opacity: .88; }
+
+/* ── Result Flash ─────────────────────────────────────────────────────────── */
+.result-screen {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  border-radius: 20px;
+  animation: pop .2s cubic-bezier(.34,1.56,.64,1);
+}
+.correct { background: radial-gradient(ellipse at center, #052e1640 0%, transparent 70%); }
+.wrong   { background: radial-gradient(ellipse at center, #2e050f40 0%, transparent 70%); }
+
+@keyframes pop {
+  from { transform: scale(.82); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+.result-icon { font-size: 5.5rem; line-height: 1; }
+.result-msg  { font-size: 2.2rem; font-weight: 900; letter-spacing: -.02em; }
+.correct .result-msg { color: var(--green); text-shadow: 0 0 24px #22d36a60; }
+.wrong   .result-msg { color: var(--red);   text-shadow: 0 0 24px #ff446660; }
+.result-ans { font-size: 1rem; color: var(--muted); }
+.result-ans strong { color: var(--text); font-size: 1.1rem; }
+.result-score { font-size: 1rem; color: var(--muted); }
+
+/* ── End Screen ──────────────────────────────────────────────────────────── */
+.end-screen {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+.end-trophy   { font-size: 4.5rem; filter: drop-shadow(0 0 20px #ffd70080); }
+.end-title    { font-size: 2.2rem; font-weight: 900; }
+.end-name     {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 4px;
+  background: linear-gradient(90deg, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.end-category { font-size: .9rem; color: var(--muted); margin-bottom: 8px; }
+.end-score {
+  font-size: 5.5rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #22d36a, #4ade80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px #22d36a60);
+}
+.end-score-label { font-size: 1.1rem; color: var(--muted); }
+.end-total    { font-size: .9rem; color: var(--muted); margin-bottom: 24px; }
+.end-actions  { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Leaderboard ─────────────────────────────────────────────────────────── */
+.lb-screen { display: flex; flex-direction: column; gap: 14px; }
+.lb-title  {
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 4px;
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lb-list {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.lb-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr auto;
+  align-items: center;
+  padding: 13px 16px;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-row:hover { background: var(--surface2); }
+
+/* Top 3 highlighted rows */
+.lb-top:nth-child(1) { background: linear-gradient(90deg, #1a140a, var(--surface)); }
+.lb-top:nth-child(2) { background: linear-gradient(90deg, #0e1018, var(--surface)); }
+.lb-top:nth-child(3) { background: linear-gradient(90deg, #100c0a, var(--surface)); }
+
+.lb-rank {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--muted);
+}
+.lb-top:nth-child(1) .lb-rank { color: #ffd700; font-size: 1.15rem; }
+.lb-top:nth-child(2) .lb-rank { color: #c0c0c0; font-size: 1.1rem; }
+.lb-top:nth-child(3) .lb-rank { color: #cd7f32; font-size: 1.05rem; }
+
+.lb-name  { font-weight: 600; }
+.lb-top:nth-child(1) .lb-name { color: #fde68a; }
+
+.lb-cat {
+  font-size: .75rem;
+  color: var(--muted);
+  background: var(--surface2);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lb-score {
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--green);
+  text-shadow: 0 0 10px #22d36a50;
+}
+.lb-empty { text-align: center; color: var(--muted); padding: 52px; font-size: 1rem; }

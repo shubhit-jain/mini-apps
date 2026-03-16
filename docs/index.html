@@ -7,13 +7,23 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared/base.css" />
   <style>
     body { font-family: 'Inter', sans-serif; }
     .card:hover .arrow { transform: translateX(4px); }
     .arrow { transition: transform 0.2s ease; }
+    /* home logo colour overrides */
+    .home-logo { background: #fff; border: 1.5px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .home-logo:hover { box-shadow: 0 2px 8px rgba(99,102,241,0.15); border-color: #a5b4fc; }
+    .home-logo-sq { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50">
+
+  <!-- Home nav logo -->
+  <a href="./" aria-label="Home" class="home-logo">
+    <div class="home-logo-sq"></div>
+  </a>
 
   <div class="max-w-3xl mx-auto px-6 py-16">
 
@@ -24,6 +34,16 @@
 
     <div class="grid gap-4 sm:grid-cols-2">
       
+      <a href="apps/guesser/" class="card group flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
+        <div class="text-3xl leading-none mt-0.5">🎯</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="font-semibold text-slate-800 text-base truncate">Guesser!</h2>
+            <span class="arrow text-slate-300 text-lg flex-shrink-0">→</span>
+          </div>
+          <p class="text-sm text-slate-400 mt-0.5 line-clamp-2">Guess computer parts, supercar brands, and Indian states — 60 seconds on the clock!</p>
+        </div>
+      </a>
       <a href="apps/minecraft/" class="card group flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
         <div class="text-3xl leading-none mt-0.5">⛏️</div>
         <div class="flex-1 min-w-0">
@@ -42,6 +62,16 @@
             <span class="arrow text-slate-300 text-lg flex-shrink-0">→</span>
           </div>
           <p class="text-sm text-slate-400 mt-0.5 line-clamp-2">Race the clock on tables 11–20. Who scores the most in 60 seconds?</p>
+        </div>
+      </a>
+      <a href="apps/uno/" class="card group flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
+        <div class="text-3xl leading-none mt-0.5">🃏</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="font-semibold text-slate-800 text-base truncate">UNO</h2>
+            <span class="arrow text-slate-300 text-lg flex-shrink-0">→</span>
+          </div>
+          <p class="text-sm text-slate-400 mt-0.5 line-clamp-2">Classic UNO card game for 2–10 players. Match colors and numbers, play action cards, and be first to empty your hand!</p>
         </div>
       </a>
     </div>
