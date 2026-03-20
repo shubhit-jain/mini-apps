@@ -23,21 +23,21 @@ const BANKS = {
     emoji: '💻',
     color: '#6366f1',
     questions: [
-      { visual: '🧠', clue: 'The brain of the computer — processes every instruction', answer: 'cpu', aliases: ['processor', 'central processing unit'] },
-      { visual: '📋', clue: 'Temporary memory that holds running programs. Gone when you shut down!', answer: 'ram', aliases: ['random access memory', 'memory'] },
-      { visual: '💾', clue: 'Stores your files permanently, even when powered off. Has spinning discs inside!', answer: 'hard drive', aliases: ['hdd', 'hard disk', 'hard disk drive'] },
-      { visual: '⚡', clue: 'Converts wall power into safe voltage for all components', answer: 'power supply', aliases: ['psu', 'power supply unit'] },
-      { visual: '🖥️', clue: 'The main circuit board — every component plugs into it', answer: 'motherboard', aliases: ['mainboard', 'mobo'] },
-      { visual: '🎮', clue: 'Renders all the graphics and video on your screen. Gamers want a powerful one!', answer: 'graphics card', aliases: ['gpu', 'graphics processing unit', 'video card'] },
-      { visual: '❄️', clue: 'Keeps the CPU from overheating. It spins fast to blow heat away!', answer: 'cpu fan', aliases: ['fan', 'cooler', 'cpu cooler', 'heatsink', 'heat sink'] },
-      { visual: '📀', clue: 'Reads and writes CDs and DVDs using a laser beam', answer: 'optical drive', aliases: ['dvd drive', 'cd drive', 'disc drive', 'dvd'] },
-      { visual: '⚙️', clue: 'Super-fast storage with no moving parts — much quicker than an HDD', answer: 'ssd', aliases: ['solid state drive', 'solid-state drive'] },
-      { visual: '🖱️', clue: 'You move it on your desk to control the cursor on screen', answer: 'mouse', aliases: [] },
-      { visual: '⌨️', clue: 'You type on it to give text and commands to the computer', answer: 'keyboard', aliases: [] },
-      { visual: '📡', clue: 'Lets your computer connect to Wi-Fi without any cables', answer: 'wifi card', aliases: ['wireless card', 'wifi adapter', 'wireless adapter', 'wi-fi card', 'wifi'] },
-      { visual: '🔊', clue: 'Turns digital audio signals into sounds you can actually hear', answer: 'speakers', aliases: ['speaker', 'sound card'] },
-      { visual: '📺', clue: 'Displays everything visually. Size is measured diagonally in inches.', answer: 'monitor', aliases: ['screen', 'display'] },
-      { visual: '🔋', clue: 'Stores power in laptops so you can use them without plugging in', answer: 'battery', aliases: [] },
+      { visual: '🧠', clue: 'Called the "brain" of the computer. Every app, game, and task runs through it. Short form: C-P-U.', answer: 'cpu', aliases: ['processor', 'central processing unit'] },
+      { visual: '📋', clue: 'The computer\'s short-term memory. It holds open apps and tabs. Clears completely when you restart. Short form: R-A-M.', answer: 'ram', aliases: ['random access memory', 'memory'] },
+      { visual: '💾', clue: 'The big storage inside your computer. Keeps all your files, photos, and games even when powered off. Called a "hard ___".', answer: 'hard drive', aliases: ['hdd', 'hard disk', 'hard disk drive'] },
+      { visual: '⚡', clue: 'The box inside your PC that converts electricity from the wall into safe voltage for all parts. Short: P-S-U.', answer: 'power supply', aliases: ['psu', 'power supply unit'] },
+      { visual: '🖥️', clue: 'The big flat circuit board that everything plugs into — CPU, RAM, and more. Also called "mobo".', answer: 'motherboard', aliases: ['mainboard', 'mobo'] },
+      { visual: '🎮', clue: 'Makes all the visuals on your screen. Gamers spend big money on this. Also called a "video card" or GPU.', answer: 'graphics card', aliases: ['gpu', 'graphics processing unit', 'video card'] },
+      { visual: '❄️', clue: 'Sits on top of the CPU and keeps it from overheating. Has a spinning fan. Two words — "CPU ___".', answer: 'cpu fan', aliases: ['fan', 'cooler', 'cpu cooler', 'heatsink', 'heat sink'] },
+      { visual: '📀', clue: 'The tray that slides out to hold a CD or DVD. Uses a laser to read the disc. Called an "optical ___".', answer: 'optical drive', aliases: ['dvd drive', 'cd drive', 'disc drive', 'dvd'] },
+      { visual: '⚙️', clue: 'Like a hard drive but way faster and silent — no spinning parts inside. 3 letters: S-S-_', answer: 'ssd', aliases: ['solid state drive', 'solid-state drive'] },
+      { visual: '🖱️', clue: 'You slide it around on your desk and it moves the pointer on screen.', answer: 'mouse', aliases: [] },
+      { visual: '⌨️', clue: 'You press its keys to type words, numbers, and commands into the computer.', answer: 'keyboard', aliases: [] },
+      { visual: '📡', clue: 'A small card inside a desktop PC that lets it connect to wireless internet without a cable.', answer: 'wifi card', aliases: ['wireless card', 'wifi adapter', 'wireless adapter', 'wi-fi card', 'wifi'] },
+      { visual: '🔊', clue: 'Plugged into your computer or TV to produce sound. Come in pairs usually!', answer: 'speakers', aliases: ['speaker', 'sound card'] },
+      { visual: '📺', clue: 'The screen that shows you everything — your desktop, videos, and games. Measured diagonally in inches.', answer: 'monitor', aliases: ['screen', 'display'] },
+      { visual: '🔋', clue: 'Found in every laptop. Lets you use it away from the charger. Loses charge over time.', answer: 'battery', aliases: [] },
     ],
   },
 
@@ -46,21 +46,21 @@ const BANKS = {
     emoji: '🏎️',
     color: '#f43f5e',
     questions: [
-      { visual: '🇮🇹', clue: 'Italian brand since 1947. Prancing horse logo. The 458 Italia and LaFerrari are iconic.', answer: 'ferrari', aliases: [] },
-      { visual: '🇮🇹', clue: 'Italian brand since 1963, started by a tractor manufacturer! Raging bull logo. Makes the Aventador and Huracán.', answer: 'lamborghini', aliases: [] },
-      { visual: '🇩🇪', clue: 'German sports car legend since 1931. The 911 has been in production for over 60 years!', answer: 'porsche', aliases: [] },
-      { visual: '🇬🇧', clue: 'British brand from Woking. Makes the P1, Senna, and Speedtail hypercars.', answer: 'mclaren', aliases: [] },
-      { visual: '🇫🇷', clue: 'French luxury brand owned by Volkswagen. The Chiron does 0–100 km/h in just 2.4 seconds!', answer: 'bugatti', aliases: [] },
-      { visual: '🇬🇧', clue: 'British brand with the "Spirit of Ecstasy" hood ornament. Ghost, Wraith, and Phantom models.', answer: 'rolls royce', aliases: ['rolls-royce', 'rollsroyce'] },
-      { visual: '🇮🇹', clue: 'Italian brand since 1914. Trident logo. The MC20 is their modern supercar.', answer: 'maserati', aliases: [] },
-      { visual: '🇸🇪', clue: 'Swedish hypercar brand. The Jesko is engineered to surpass 300 mph!', answer: 'koenigsegg', aliases: [] },
-      { visual: '🇬🇧', clue: 'British grand-tourer brand since 1919. Famous for the Continental GT.', answer: 'bentley', aliases: [] },
-      { visual: '🇺🇸', clue: 'American sports car, a division of Chevrolet since 1953. Mid-engine since 2020!', answer: 'corvette', aliases: ['chevrolet corvette', 'chevy corvette'] },
-      { visual: '🇩🇪', clue: 'German brand. The AMG GT Black Series makes 730 hp from a twin-turbo V8.', answer: 'mercedes', aliases: ['mercedes-benz', 'mercedes benz', 'merc'] },
-      { visual: '🇮🇹', clue: 'Italian brand founded in 1992. The Huayra is named after the Andean wind god.', answer: 'pagani', aliases: [] },
-      { visual: '🇩🇪', clue: 'German brand with signature quad LED headlights. The R8 V10 is their supercar.', answer: 'audi', aliases: [] },
-      { visual: '🇺🇸', clue: 'American tuning company. The Venom F5 is chasing the title of world\'s fastest car.', answer: 'hennessey', aliases: ['hennessey venom'] },
-      { visual: '🇬🇧', clue: 'British brand since 1913. Makes the DB11 and Vantage — licensed to kill, so to speak.', answer: 'aston martin', aliases: ['astonmartin', 'aston-martin'] },
+      { visual: '🇮🇹', clue: 'The most famous supercar brand in the world. Italian. Red cars with a prancing horse logo. Starts with F.', answer: 'ferrari', aliases: [] },
+      { visual: '🇮🇹', clue: 'Italian rival to Ferrari — started by a tractor maker! A raging bull is their logo. Makes the Aventador and Huracán.', answer: 'lamborghini', aliases: [] },
+      { visual: '🇩🇪', clue: 'German sports car brand. Their most famous model is the "911". Four-letter brand starting with P.', answer: 'porsche', aliases: [] },
+      { visual: '🇬🇧', clue: 'British brand that also races in Formula 1. Made the iconic P1 hypercar. 7 letters, starts with Mc.', answer: 'mclaren', aliases: [] },
+      { visual: '🇫🇷', clue: 'French hypercar — the most expensive and powerful production car ever made. The Chiron and Veyron are their models.', answer: 'bugatti', aliases: [] },
+      { visual: '🇬🇧', clue: 'The world\'s most luxurious car brand. Has a "Spirit of Ecstasy" figurine on the hood. Two words — like the famous poem "Rolls ___".', answer: 'rolls royce', aliases: ['rolls-royce', 'rollsroyce'] },
+      { visual: '🇮🇹', clue: 'Italian luxury brand with a trident logo (like a pitchfork). Their supercar is called the MC20.', answer: 'maserati', aliases: [] },
+      { visual: '🇸🇪', clue: 'Swedish hypercar — one of the rarest in the world. The Jesko model aims for 300+ mph. Hard to spell! Starts with K.', answer: 'koenigsegg', aliases: [] },
+      { visual: '🇬🇧', clue: 'Ultra-luxury British car brand. Owned by Volkswagen. Their Continental GT is a grand tourer. Starts with B.', answer: 'bentley', aliases: [] },
+      { visual: '🇺🇸', clue: 'America\'s most famous sports car — made by Chevrolet since 1953. Mid-engine layout since 2020! Starts with C.', answer: 'corvette', aliases: ['chevrolet corvette', 'chevy corvette'] },
+      { visual: '🇩🇪', clue: 'Famous German car brand. Their AMG performance division makes the GT Black Series. Three-pointed star logo.', answer: 'mercedes', aliases: ['mercedes-benz', 'mercedes benz', 'merc'] },
+      { visual: '🇮🇹', clue: 'Italian hypercar brand founded in 1992 — makes only a handful of cars per year. The Huayra is their flagship model.', answer: 'pagani', aliases: [] },
+      { visual: '🇩🇪', clue: 'German car brand with FOUR interlocking rings as their logo. Their sports car is the R8 with a V10 engine.', answer: 'audi', aliases: [] },
+      { visual: '🇺🇸', clue: 'American tuner known for extreme modified cars. Their Venom F5 is one of the fastest cars ever. Starts with H.', answer: 'hennessey', aliases: ['hennessey venom'] },
+      { visual: '🇬🇧', clue: 'The British sports car that James Bond drives! Makes the DB11 and Vantage. Two words — starts with "Aston".', answer: 'aston martin', aliases: ['astonmartin', 'aston-martin'] },
     ],
   },
 
@@ -70,88 +70,99 @@ const BANKS = {
     color: '#10b981',
     questions: [
       {
-        // Very long and narrow strip along SW coast
-        points: '72,8 94,14 100,40 96,75 88,110 76,145 64,172 50,172 44,150 50,114 58,80 60,44 62,18',
-        hint: 'Southernmost state — famous for backwaters and coconut trees',
+        // Kerala: very tall and narrow — like a thin finger along the southwest coast
+        // Width ~30px, height ~170px
+        points: '76,5 96,5 102,32 100,62 96,92 91,122 85,150 78,172 65,175 56,160 60,130 65,100 68,70 71,38',
+        hint: 'A very long, narrow state along the southwest coast. Famous for backwaters, coconut trees, and houseboats. Capital: Thiruvananthapuram.',
         answer: 'kerala',
         aliases: [],
       },
       {
-        // Large, wide — roughly rectangular, wider than tall
-        points: '10,20 152,14 168,44 158,95 130,112 80,122 36,114 10,86 4,52',
-        hint: 'Largest state by area, mostly desert. The Pink City Jaipur is its capital.',
+        // Rajasthan: largest state — wide and tall, roughly rectangular, slightly tapered
+        // Width ~165px, height ~115px
+        points: '8,35 158,18 175,52 165,110 125,130 55,135 8,115 0,72',
+        hint: 'The LARGEST state in India by area — mostly desert (Thar Desert). The Pink City Jaipur is its capital.',
         answer: 'rajasthan',
         aliases: [],
       },
       {
-        // Roughly triangular — wide at north, comes to a point at the south (Kanyakumari)
-        points: '30,14 148,14 162,52 150,95 120,134 88,166 62,166 30,134 16,92 22,48',
-        hint: 'Southeasternmost state. Chennai is its capital. Tip touches three seas!',
+        // Tamil Nadu: roughly triangular — wide at north, narrows sharply to a point at south (Kanyakumari)
+        // Wide top (~145px), narrows to a point at bottom (~y=175)
+        points: '22,18 152,18 168,55 150,100 122,140 90,176 65,174 28,138 14,95 20,55',
+        hint: 'Shaped like a triangle pointing south. Chennai is its capital. The very tip at Kanyakumari is where three seas meet!',
         answer: 'tamil nadu',
         aliases: ['tamilnadu'],
       },
       {
-        // Small, compact, roughly square
-        points: '26,30 114,24 122,58 116,118 74,128 20,102 16,62',
-        hint: 'Small state in northwest India. Home of the Golden Temple in Amritsar.',
+        // Punjab: small and roughly square/trapezoidal — northwest India
+        // ~100px x 100px
+        points: '30,28 108,20 120,55 112,128 60,135 22,110 18,65',
+        hint: 'A small state in the northwest. Famous for the Golden Temple in Amritsar and rich farmland. Capital: Chandigarh.',
         answer: 'punjab',
         aliases: [],
       },
       {
-        // Tiny coastal state — small roughly rectangular blob
-        points: '46,36 124,30 134,68 120,126 66,130 40,98 38,60',
-        hint: 'Smallest state in India — famous for beaches and seafood. Panaji is the capital.',
+        // Goa: tiny coastal state — visibly smaller than all others
+        // Make it clearly small ~70px x 80px, centered
+        points: '62,45 122,38 132,70 124,128 66,134 48,105 46,70',
+        hint: 'The SMALLEST state in India. Famous for beaches, seafood, and festivals. Capital: Panaji.',
         answer: 'goa',
         aliases: [],
       },
       {
-        // Distinctive: main body top + Saurashtra peninsula protruding SOUTH
-        // Top (north border): wide, roughly flat
-        // Right side goes down, then the coast creates the Saurashtra peninsula bulge
-        points: '10,20 150,14 165,50 162,84 160,110 144,145 100,170 56,160 24,130 14,94 8,56',
-        hint: 'Western state — has a HUGE peninsula that juts into the Arabian Sea. Home of Garba!',
+        // Gujarat: distinctive — main body at top, Saurashtra peninsula bulges south
+        // The Gulf of Khambhat creates a concavity on the east side of the peninsula
+        points: '8,20 155,14 170,50 164,82 152,98 160,115 148,148 106,172 70,165 46,142 53,118 36,98 14,78 6,50',
+        hint: 'Western state with a big peninsula (Saurashtra) jutting into the Arabian Sea. Home of Garba and the Gir Forest lions. Capital: Gandhinagar.',
         answer: 'gujarat',
         aliases: [],
       },
       {
-        // Wide in south, pinched narrow NECK in middle, slightly wider at north
-        points: '56,8 102,8 110,34 106,60 90,74 92,88 110,102 114,128 92,158 62,165 26,150 14,114 18,72 36,42 42,20',
-        hint: 'Eastern state with a famous narrow "chicken neck" corridor at the top. Home of Kolkata.',
+        // West Bengal: DISTINCTIVE chicken neck — narrow corridor at top (~25px wide), then widens sharply
+        // Narrow at top (Siliguri corridor), wide at bottom
+        points: '83,5 103,5 108,28 106,52 120,72 140,96 137,128 116,160 76,165 45,148 40,118 52,80 79,58 85,32',
+        hint: 'Has a very narrow "chicken neck" corridor at the top connecting to Northeast India, then widens. Kolkata is its capital.',
         answer: 'west bengal',
         aliases: ['bengal', 'wb'],
       },
       {
-        // Very wide, short — large central state
-        points: '6,30 166,20 184,52 166,94 102,108 16,94 0,60',
-        hint: 'Large central state — home of many tiger reserves including Kanha and Bandhavgarh.',
+        // Madhya Pradesh: wide central state — wider than tall
+        // ~175px wide, ~95px tall
+        points: '5,38 168,24 188,60 168,102 95,118 12,102 0,65',
+        hint: 'The large central state of India — "Madhya" means "middle". Famous for tiger reserves like Kanha and Bandhavgarh. Capital: Bhopal.',
         answer: 'madhya pradesh',
         aliases: ['mp'],
       },
       {
-        // Extremely wide and short — most populous state
-        points: '4,20 174,14 188,52 172,98 86,112 4,94',
-        hint: 'Most populous state in India. Lucknow is the capital. The Taj Mahal is here!',
+        // Uttar Pradesh: very wide and flat — wider than MP
+        // ~185px wide, ~85px tall, very rectangular
+        points: '2,25 178,18 192,55 178,100 85,118 2,98',
+        hint: 'The most POPULOUS state in India — more people than most countries! The Taj Mahal is here. Capital: Lucknow.',
         answer: 'uttar pradesh',
         aliases: ['up'],
       },
       {
-        // Wide in east (Vidarbha), tapers toward west coast — roughly trapezoidal
-        points: '8,30 148,20 174,50 170,92 122,112 66,122 8,86',
-        hint: 'Western state — Mumbai, India\'s financial capital, is on its coast.',
+        // Maharashtra: wide N border, irregular S border that dips in the middle
+        // Left coast (Konkan) is NOT vertical — x varies 12→22 as you go south
+        // S border slopes: high-E (Chandrapur ~y=92) dips to middle-S (Nanded ~y=128) rises to W (Sindhudurg ~y=112)
+        points: '15,32 170,25 178,58 172,92 148,108 118,128 62,130 22,112 14,82 12,52',
+        hint: 'A large western state home to Mumbai — India\'s financial capital and Bollywood. Capital: Mumbai.',
         answer: 'maharashtra',
         aliases: [],
       },
       {
-        // Roughly square/rhombus shape
-        points: '14,16 102,8 144,30 154,78 118,124 62,134 12,110 4,62',
-        hint: 'Southern state — Bengaluru (Bangalore), India\'s IT hub, is its capital.',
+        // Karnataka: roughly quadrilateral/irregular — wider at north, tapers south
+        // ~148px wide, ~135px tall
+        points: '10,22 108,14 152,35 162,88 122,134 68,144 10,120 4,70',
+        hint: 'Southern state. Bengaluru (Bangalore) is its capital — India\'s IT hub and "Silicon Valley of India".',
         answer: 'karnataka',
         aliases: [],
       },
       {
-        // Irregular mountainous — wider at east, tapers west
-        points: '18,52 56,18 100,8 144,24 140,76 108,96 56,110 10,86',
-        hint: 'Northern mountain state. Shimla is the capital. Famous for apples and snow!',
+        // Himachal Pradesh: elongated E-W, narrow N-S — sits in the mountains
+        // ~145px wide, ~100px tall
+        points: '20,55 58,20 108,8 150,28 146,84 110,102 56,118 14,92',
+        hint: 'A northern mountain state in the Himalayas. Shimla is the capital. Famous for apple orchards and heavy snowfall in winter.',
         answer: 'himachal pradesh',
         aliases: ['hp', 'himachal'],
       },
@@ -375,9 +386,11 @@ function renderPlaying() {
       </div>
       <div class="q-hint">${esc(question.hint)}</div>`;
   } else {
+    const blanks = question.answer.split(' ').map(w => '_ '.repeat(w.length).trim()).join('  ');
     questionHTML = `
       <div class="q-visual">${question.visual}</div>
-      <div class="q-clue">${esc(question.clue)}</div>`;
+      <div class="q-clue">${esc(question.clue)}</div>
+      <div class="q-blanks">${esc(blanks)}</div>`;
   }
 
   app.innerHTML = `
