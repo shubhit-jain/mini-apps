@@ -12,10 +12,13 @@ function loadApp({ speech = false, savedSound = null } = {}) {
   const storage = new Map(savedSound ? [['hindi_flash_sound', savedSound]] : []);
   const audio = { spoken: [], cancellations: 0 };
   function element() {
+    const handlers = new Map();
     return {
       style: { display: 'none' }, classList: { add() {}, remove() {} },
       textContent: '', innerHTML: '', hidden: false,
-      addEventListener() {}, setAttribute() {}, focus() {},
+      handlers,
+      addEventListener(event, handler) { handlers.set(event, handler); }, setAttribute() {}, focus() {},
+      getBoundingClientRect() { return { left: 100, width: 400 }; },
       appendChild() {}, querySelector() { return null; },
     };
   }
@@ -139,4 +142,25 @@ test('daily cards and unique session words measure different things', () => {
   assert.equal(app.elements.get('progress').textContent, '50 / 50 explored');
   app.run('showWordIndex(backStack[0], { animate: false });');
   assert.equal(app.run('readTodayGet()'), 51);
+});
+
+test('left-quarter taps review; the boundary and rest move forward without button interference', async () => {
+  const app = loadApp();
+  app.run("selectLevel('level-1');");
+  const first = app.run('currentIndex');
+  app.run('advanceToNewRandom();');
+  const second = app.run('currentIndex');
+  const click = app.elements.get('card').handlers.get('click');
+  const target = { closest: () => null };
+  await click({ detail: 1, clientX: 199, target });
+  assert.equal(app.run('currentIndex'), first);
+  assert.equal(app.run('readTodayGet()'), 2);
+  await click({ detail: 1, clientX: 200, target });
+  assert.equal(app.run('currentIndex'), second);
+  assert.equal(app.run('readTodayGet()'), 2);
+  await click({ detail: 1, clientX: 450, target });
+  assert.equal(app.run('readTodayGet()'), 3);
+  const current = app.run('currentIndex');
+  await click({ detail: 1, clientX: 101, target: { closest: () => ({}) } });
+  assert.equal(app.run('currentIndex'), current);
 });

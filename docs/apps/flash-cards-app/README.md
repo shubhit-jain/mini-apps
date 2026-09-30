@@ -16,7 +16,7 @@ These are curated practice groups, not an official graded curriculum or a measur
 1. Talk about a familiar object or action before reading its word. Ask the child what it means.
 2. Begin with a comfortable level. An adult can model how letters and matras combine, then let the child try aloud before using the pronunciation button.
 3. As a practical session suggestion, try 5–10 words for about five minutes. Keep it relaxed and stop sooner if the child is tired; these numbers are not a research-validated dosage.
-4. Revisit words that needed help. Use the left arrow to return to a recent card, and compare similar spellings such as दिन and दिल.
+4. Revisit words that needed help. Tap the left 25% of the flash card (anywhere vertically), or use the left arrow key, to return to a recent card. The app keeps the last five words. Tap the remaining 75% or use the right arrow to move forward again. Compare similar spellings such as दिन and दिल.
 5. Finish by saying a sentence with a practiced word, then reading a short sentence or story together. Word cards are one part of reading practice; connected text adds meaning and comprehension.
 6. Move on when the child reads comfortably and understands the words. There is no speed test or fixed age cutoff.
 
@@ -151,4 +151,3 @@ The speaker toggle mutes pronunciation and chimes, stops audio already playing, 
 मंगलवार · प्रार्थना · अध्यापक · विद्यार्थी · दोस्तों · किताबें · कहानियाँ · अभ्यास · तस्वीर · संख्या
 
 गुब्बारा · झंडा · रंगीन · नींबू · पंडित · नमस्ते · जल्दी · स्वच्छ · स्वाद · यात्रा
-

@@ -38,7 +38,6 @@
 
     .word { z-index:2; font-size: clamp(36px,8vw,116px); font-weight:700; text-align:center; padding:0 1rem; color:#222; display:inline-block; }
 
-    .hint { position:absolute; z-index:2; bottom:18px; left:50%; transform:translateX(-50%); font-size:14px; color:#444; opacity:0.9; }
 
     .controls { position:absolute; top:12px; right:12px; z-index:3; display:flex; gap:0.5rem; align-items:center; }
     .btn-circle { width:44px; height:44px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(0,0,0,0.12); font-size:18px; background:white; }
@@ -74,7 +73,6 @@
 
     @media (max-width:520px) {
       .card-flash { border-radius:14px; }
-      .hint { font-size:12px; bottom:14px; }
       .controls { top:64px; }
       .btn-circle { width:40px; height:40px; font-size:16px; }
       .level-overlay { padding:64px 12px 16px; }
@@ -103,7 +101,7 @@
   </div>
 
   <div class="stage" id="mainStage" aria-hidden="true">
-    <div class="card-flash" id="card" tabindex="0" role="button" aria-label="Hindi sight word flash card. Click to see next word.">
+    <div class="card-flash" id="card" tabindex="0" role="button" aria-label="Hindi flash card. Tap the left quarter for the previous word; tap the rest for the next word. Use left and right arrow keys with a keyboard.">
       <button id="levelsBtn" type="button" class="btn btn-light levels-button" aria-haspopup="dialog" aria-controls="levelOverlay">Levels</button>
 
       <div class="controls" aria-hidden="false">
@@ -117,7 +115,6 @@
         <div class="word" id="wordText">शब्द</div>
       </div>
 
-      <div class="hint" id="hint">क्लिक करें / स्पेस दबाएँ — अगले शब्द के लिए</div>
       <div class="footer-note" id="progress">0 / 0</div>
     </div>
   </div>
@@ -747,7 +744,6 @@ const mainStage = document.getElementById('mainStage');
 const card = document.getElementById('card');
 const wordElWrapper = document.getElementById('wordEl');
 const wordText = document.getElementById('wordText');
-const hint = document.getElementById('hint');
 const progress = document.getElementById('progress');
 const shuffleBtn = document.getElementById('shuffleBtn');
 const soundBtn = document.getElementById('soundBtn');
@@ -1063,7 +1059,15 @@ levelsBtn.addEventListener('click', (e) => {
   showLevelOverlay();
 });
 levelsBtn.addEventListener('keydown', (e) => e.stopPropagation());
-card.addEventListener('click', () => userRequestedNext());
+card.addEventListener('click', (e) => {
+  if(e.target.closest('button, a, .controls')) return;
+  // Keyboard/assistive clicks have no pointer position; keep their Next action.
+  if(e.detail === 0) return userRequestedNext();
+  const bounds = card.getBoundingClientRect();
+  return e.clientX < bounds.left + bounds.width * 0.25
+    ? userRequestedBack()
+    : userRequestedNext();
+});
 window.addEventListener('keydown', (e) => {
   if(overlay.style.display !== 'none') {
     if(e.key === 'Escape' && currentLevelKey) {
