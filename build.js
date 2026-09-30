@@ -38,6 +38,7 @@ const apps = fs.readdirSync(APPS_DIR, { withFileTypes: true })
       : {};
     return {
       slug: d.name,
+      entry: meta.entry || '',
       title: meta.title || d.name,
       description: meta.description || '',
       emoji: meta.emoji || '🧩',
@@ -57,7 +58,7 @@ copyDir(path.join(ROOT, 'public', 'shared'), path.join(DOCS, 'shared'));
 // ── generate index.html ───────────────────────────────────────────────────────
 
 const appCards = apps.map(app => `
-      <a href="apps/${app.slug}/" class="card group flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
+      <a href="apps/${app.slug}/${app.entry}" class="card group flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
         <div class="text-3xl leading-none mt-0.5">${app.emoji}</div>
         <div class="flex-1 min-w-0">
           <div class="flex items-center justify-between gap-2">

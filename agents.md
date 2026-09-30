@@ -1,4 +1,4 @@
-# Mini Apps — Workflow
+# Mini Apps — Agent Guide
 
 ## Vision
 A casual, growing collection of single-page web apps — each purpose-built and self-contained.
@@ -51,7 +51,7 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 
 ## Adding a New App
 1. Create `apps/<name>/` directory
-2. Add `meta.json` with `title`, `description`, `emoji`
+2. Add `meta.json` with `title`, `description`, `emoji` (and optional `entry` for an HTML filename other than `index.html`)
 3. Build `index.html`, `logic.js`, `style.css`
 4. Add the home nav logo (see Common UI Requirements above)
 5. App auto-appears on the home page (dev) and in the build (deploy)
@@ -64,6 +64,11 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 - [x] Casual, modern home page UI (Tailwind via CDN)
 
 ## Apps
+
+### 📚 Hindi Flash Cards (`apps/flash-cards-app/`)
+- **Goal**: Practice reading Hindi words across multiple levels
+- **Entry point**: `index-hindi.html`, linked through `meta.json`
+- Keep the imported app self-contained; no refactor needed for index integration
 
 ### ⚡ Speed Math (`apps/speed-math/`)
 - **Audience**: Tweens (10–14)

@@ -38,6 +38,7 @@ app.get('/api/apps', (req, res) => {
         : {};
       return {
         slug: d.name,
+        entry: meta.entry || '',
         title: meta.title || d.name,
         description: meta.description || '',
         emoji: meta.emoji || '🧩',

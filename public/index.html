@@ -62,7 +62,7 @@
 
         apps.forEach(app => {
           const card = document.createElement('a');
-          card.href = `/apps/${app.slug}/`;
+          card.href = `/apps/${app.slug}/${app.entry || ''}`;
           card.className = 'card group flex items-start gap-4 bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200';
           card.innerHTML = `
             <div class="text-3xl leading-none mt-0.5">${app.emoji}</div>

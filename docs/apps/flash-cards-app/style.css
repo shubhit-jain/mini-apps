@@ -1,0 +1,189 @@
+:root{
+      --bg1: linear-gradient(135deg,#ffd8d0 0%, #ffe9b3 50%, #d2f8d2 100%);
+      --card-bg: rgba(255,255,255,0.96);
+      --accent: #ff5a5f;
+      --accent2: #00a699;
+    }
+    html,body{ height:100%; margin:0; font-family: "Noto Sans Devanagari","Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg1); }
+
+    .stage { height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; box-sizing:border-box; }
+
+    .card-flash {
+      width:min(760px,92vw); height:min(440px,62vh); max-height:560px;
+      display:flex; align-items:center; justify-content:center; border-radius:20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      background: radial-gradient(1200px 500px at 10% 10%, rgba(255,255,255,0.6), transparent),
+                  var(--card-bg);
+      position:relative; cursor:pointer; overflow:hidden; -webkit-tap-highlight-color: transparent;
+      user-select:none; -webkit-user-select:none;
+    }
+    .card-flash::before, .card-flash::after { content:""; position:absolute; width:220px; height:220px; border-radius:50%; z-index:0; filter:blur(14px); opacity:0.35; }
+    .card-flash::before { left:-80px; top:-60px; background: linear-gradient(135deg,var(--accent),#ffa9a9); }
+    .card-flash::after { right:-80px; bottom:-60px; background: linear-gradient(135deg,var(--accent2),#8ee5d1); }
+
+    .word { z-index:2; font-size: clamp(58px,9.6vw,144px); font-weight:700; letter-spacing:1px; text-align:center; padding:0 1rem; color:#222; display:inline-block; }
+
+    .hint { position:absolute; z-index:2; bottom:18px; left:50%; transform:translateX(-50%); font-size:14px; color:#444; opacity:0.9; }
+
+    .controls { position:absolute; top:12px; right:12px; z-index:3; display:flex; gap:0.5rem; align-items:center; }
+    .btn-circle { width:44px; height:44px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(0,0,0,0.12); font-size:18px; background:white; }
+
+    #backBtn { width: 50px; height: 50px; font-size: 24px; }
+
+    .anim-flip { transition: transform 260ms cubic-bezier(.2,.9,.3,1), opacity 160ms ease; transform-origin:center; will-change:transform,opacity; }
+    .anim-flip.out { transform: rotateX(20deg) scale(0.88) translateY(8px); opacity:0; }
+    .anim-flip.in { transform: rotateX(-18deg) scale(1.02); opacity:0; }
+    .anim-flip.in.show { transform: rotateX(0deg) scale(1); opacity:1; }
+
+    .corner-emoji { position:absolute; z-index:1; left:18px; top:18px; font-size:28px; pointer-events:none; animation: floaty 3s ease-in-out infinite; }
+    @keyframes floaty { 0%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-6px) rotate(4deg)} 100%{transform:translateY(0) rotate(-3deg)} }
+
+    .read-today { font-size:13px; padding:6px 10px; border-radius:12px; background:rgba(255,255,255,0.9); box-shadow:0 6px 10px rgba(0,0,0,0.06); color:#333; display:inline-flex; gap:8px; align-items:center; font-weight:600; }
+
+    .footer-note { position:absolute; bottom:10px; right:14px; z-index:2; font-size:12px; color:#333; opacity:0.85; }
+
+    /* Level selection modal overlay */
+    .level-overlay { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(20,20,30,0.35); z-index:9999; }
+    .level-card { width:min(880px,94vw); max-width:1000px; padding:24px; border-radius:16px; background:white; box-shadow:0 30px 60px rgba(0,0,0,0.25); text-align:center; }
+    .level-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-top:16px; }
+    .level-btn { padding:18px 12px; border-radius:12px; border:2px solid rgba(0,0,0,0.06); background:linear-gradient(180deg,#fff,#f7f7ff); cursor:pointer; font-weight:700; font-size:18px; }
+    .level-btn small { display:block; font-weight:500; font-size:12px; color:#555; margin-top:6px; }
+    .level-btn:focus, .level-btn:hover { transform:translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+
+    @media (max-width:520px) {
+      .card-flash { border-radius:14px; }
+      .hint { font-size:12px; bottom:14px; }
+      .corner-emoji { font-size:22px; }
+      .btn-circle { width:40px; height:40px; font-size:16px; }
+      .level-card { padding:16px; }
+      .level-btn { padding:14px 10px; font-size:16px; }
+    }
+
+/* Theme Container & Selector */
+.theme-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+}
+#themeSelector {
+  width: auto;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background-color: rgba(255,255,255,0.9);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.1);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Themes */
+
+/* Frozen Theme */
+body.theme-frozen {
+  --bg1: linear-gradient(135deg, #a1d9ff 0%, #f0f8ff 100%);
+  background-image:
+    radial-gradient(rgba(255,255,255,0.4) 1.5px, transparent 1.5px),
+    radial-gradient(rgba(255,255,255,0.4) 1.5px, transparent 1.5px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  --accent: #5b9aff;
+  --accent2: #8c61ff;
+  --text-color: #0f2a4d;
+}
+body.theme-frozen .card-flash {
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(210, 235, 255, 0.85) 100%);
+  box-shadow: 0 20px 40px rgba(80, 120, 180, 0.25);
+  border: 2px solid rgba(255,255,255,0.7);
+}
+
+/* Minions Theme */
+body.theme-minions {
+  --bg1: linear-gradient(135deg, #f7d04f 0%, #005f9e 100%);
+  --accent: #005f9e;
+  --accent2: #444;
+  --text-color: #005f9e;
+}
+body.theme-minions .card-flash {
+  background: #fceb52;
+  /* Goggle effect */
+  background-image: radial-gradient(circle at 25% 50%, #fff 12%, transparent 13%),
+                    radial-gradient(circle at 75% 50%, #fff 12%, transparent 13%),
+                    radial-gradient(circle at 25% 50%, #888 18%, transparent 19%),
+                    radial-gradient(circle at 75% 50%, #888 18%, transparent 19%);
+}
+
+/* Paw Patrol Theme */
+body.theme-paw-patrol {
+  --bg1: linear-gradient(135deg, #e53935 0%, #1e88e5 100%);
+  --accent: #fdd835;
+  --accent2: #1e88e5;
+  --text-color: #fff;
+}
+body.theme-paw-patrol .card-flash {
+  background-color: #e53935;
+  /* Paw print pattern */
+  background-image: radial-gradient(circle at 20% 20%, #00000010 15%, transparent 15.5%),
+                    radial-gradient(circle at 80% 20%, #00000010 15%, transparent 15.5%),
+                    radial-gradient(circle at 20% 80%, #00000010 15%, transparent 15.5%),
+                    radial-gradient(circle at 80% 80%, #00000010 15%, transparent 15.5%);
+  background-size: 80px 80px;
+}
+body.theme-paw-patrol .hint, body.theme-paw-patrol .footer-note { color: #eee; }
+
+/* Moana Theme */
+body.theme-moana {
+  --bg1: linear-gradient(to top, #00b4d8, #ade8f4);
+  --accent: #e76f51;
+  --accent2: #2a9d8f;
+  --text-color: #264653;
+}
+body.theme-moana .card-flash {
+  background-color: #e9c46a;
+  /* Sandy texture using embedded SVG */
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f4a261' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+  border: 4px solid #e76f51;
+}
+
+/* Spider-Man Theme */
+body.theme-spiderman {
+  --bg1: linear-gradient(135deg, #003049 0%, #d62828 100%);
+  --accent: #003049;
+  --accent2: #f77f00;
+  --text-color: #fff;
+}
+body.theme-spiderman .card-flash {
+  background-color: #d62828;
+  /* Intricate web pattern */
+  background-image:
+    linear-gradient(30deg, rgba(0,0,0,0.1) 12%, transparent 12.5%, transparent 87%, rgba(0,0,0,0.1) 87.5%, rgba(0,0,0,0.1)),
+    linear-gradient(150deg, rgba(0,0,0,0.1) 12%, transparent 12.5%, transparent 87%, rgba(0,0,0,0.1) 87.5%, rgba(0,0,0,0.1)),
+    linear-gradient(60deg, rgba(0,0,0,0.1) 12%, transparent 12.5%, transparent 87%, rgba(0,0,0,0.1) 87.5%, rgba(0,0,0,0.1)),
+    linear-gradient(120deg, rgba(0,0,0,0.1) 12%, transparent 12.5%, transparent 87%, rgba(0,0,0,0.1) 87.5%, rgba(0,0,0,0.1));
+  background-size: 50px 86px;
+}
+body.theme-spiderman .hint, body.theme-spiderman .footer-note { color: #ddd; }
+
+/* Minecraft Theme */
+body.theme-minecraft {
+  --bg1: linear-gradient(135deg, #8bc34a 0%, #689f38 100%);
+  --accent: #4caf50;
+  --accent2: #5d4037;
+  --text-color: #fff;
+}
+body.theme-minecraft .card-flash {
+  border-radius: 4px;
+  border: 4px solid #5d4037;
+  background-color: #a1887f;
+  /* Dirt block texture */
+  background-image: linear-gradient(45deg, #6d4c41 25%, transparent 25%),
+    linear-gradient(-45deg, #6d4c41 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #6d4c41 75%),
+    linear-gradient(-45deg, transparent 75%, #6d4c41 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+body.theme-minecraft .hint, body.theme-minecraft .footer-note { color: #eee; }

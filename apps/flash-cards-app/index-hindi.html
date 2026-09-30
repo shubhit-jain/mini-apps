@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hindi Flash Cards — Levels (static data)</title>
+  <link rel="stylesheet" href="../../shared/base.css" />
+
+  <!-- Bootstrap 5 CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .home-logo { z-index:10000; background:#fff; border:1.5px solid #ffd8d0; box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+    .home-logo:hover, .home-logo:focus-visible { border-color:#ff5a5f; box-shadow:0 2px 12px rgba(255,90,95,0.25); }
+    .home-logo-sq { background:linear-gradient(135deg,#ff5a5f,#ffa9a9); }
+    :root{
+      --bg1: linear-gradient(135deg,#ffd8d0 0%, #ffe9b3 50%, #d2f8d2 100%);
+      --card-bg: rgba(255,255,255,0.96);
+      --accent: #ff5a5f;
+      --accent2: #00a699;
+    }
+    html,body{ height:100%; margin:0; font-family: "Noto Sans Devanagari","Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg1); }
+
+    .stage { height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem; box-sizing:border-box; }
+
+    .card-flash {
+      width:min(760px,92vw); height:min(440px,62vh); max-height:560px;
+      display:flex; align-items:center; justify-content:center; border-radius:20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      background: radial-gradient(1200px 500px at 10% 10%, rgba(255,255,255,0.6), transparent),
+                  var(--card-bg);
+      position:relative; cursor:pointer; overflow:hidden; -webkit-tap-highlight-color: transparent;
+      user-select:none; -webkit-user-select:none;
+    }
+    .card-flash::before, .card-flash::after { content:""; position:absolute; width:220px; height:220px; border-radius:50%; z-index:0; filter:blur(14px); opacity:0.35; }
+    .card-flash::before { left:-80px; top:-60px; background: linear-gradient(135deg,var(--accent),#ffa9a9); }
+    .card-flash::after { right:-80px; bottom:-60px; background: linear-gradient(135deg,var(--accent2),#8ee5d1); }
+
+    .word { z-index:2; font-size: clamp(58px,9.6vw,144px); font-weight:700; letter-spacing:1px; text-align:center; padding:0 1rem; color:#222; display:inline-block; }
+
+    .hint { position:absolute; z-index:2; bottom:18px; left:50%; transform:translateX(-50%); font-size:14px; color:#444; opacity:0.9; }
+
+    .controls { position:absolute; top:12px; right:12px; z-index:3; display:flex; gap:0.5rem; align-items:center; }
+    .btn-circle { width:44px; height:44px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(0,0,0,0.12); font-size:18px; background:white; }
+
+    .anim-flip { transition: transform 260ms cubic-bezier(.2,.9,.3,1), opacity 160ms ease; transform-origin:center; will-change:transform,opacity; }
+    .anim-flip.out { transform: rotateX(20deg) scale(0.88) translateY(8px); opacity:0; }
+    .anim-flip.in { transform: rotateX(-18deg) scale(1.02); opacity:0; }
+    .anim-flip.in.show { transform: rotateX(0deg) scale(1); opacity:1; }
+
+    .corner-emoji { position:absolute; z-index:1; left:18px; top:18px; font-size:28px; pointer-events:none; animation: floaty 3s ease-in-out infinite; }
+    @keyframes floaty { 0%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-6px) rotate(4deg)} 100%{transform:translateY(0) rotate(-3deg)} }
+
+    .read-today { font-size:13px; padding:6px 10px; border-radius:12px; background:rgba(255,255,255,0.9); box-shadow:0 6px 10px rgba(0,0,0,0.06); color:#333; display:inline-flex; gap:8px; align-items:center; font-weight:600; }
+
+    .footer-note { position:absolute; bottom:10px; right:14px; z-index:2; font-size:12px; color:#333; opacity:0.85; }
+
+    /* Level selection modal overlay */
+    .level-overlay { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(20,20,30,0.35); z-index:9999; }
+    .level-card { width:min(880px,94vw); max-width:1000px; padding:24px; border-radius:16px; background:white; box-shadow:0 30px 60px rgba(0,0,0,0.25); text-align:center; }
+    .level-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-top:16px; }
+    .level-btn { padding:18px 12px; border-radius:12px; border:2px solid rgba(0,0,0,0.06); background:linear-gradient(180deg,#fff,#f7f7ff); cursor:pointer; font-weight:700; font-size:18px; }
+    .level-btn small { display:block; font-weight:500; font-size:12px; color:#555; margin-top:6px; }
+    .level-btn:focus, .level-btn:hover { transform:translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+
+    @media (max-width:520px) {
+      .card-flash { border-radius:14px; }
+      .hint { font-size:12px; bottom:14px; }
+      .corner-emoji { font-size:22px; }
+      .btn-circle { width:40px; height:40px; font-size:16px; }
+      .level-card { padding:16px; }
+      .level-btn { padding:14px 10px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="../../" aria-label="Back to home" class="home-logo">
+    <div class="home-logo-sq"></div>
+  </a>
+  <!-- Level selection overlay (shown at start) -->
+  <div id="levelOverlay" class="level-overlay" role="dialog" aria-modal="true" aria-labelledby="levelTitle">
+    <div class="level-card">
+      <h2 id="levelTitle">Select Level</h2>
+      <p class="lead">Choose a difficulty level. You can edit the words for each level in the HTML file.</p>
+      <div id="levelGrid" class="level-grid" role="list"></div>
+      <div style="margin-top:12px; font-size:13px; color:#444;">Tip: Level selection is saved locally. To change later, clear storage or use dev tools.</div>
+    </div>
+  </div>
+
+  <div class="stage" id="mainStage" aria-hidden="true">
+    <div class="card-flash" id="card" tabindex="0" role="button" aria-label="Hindi sight word flash card. Click to see next word.">
+      <div class="corner-emoji" aria-hidden="true">🌟</div>
+
+      <div class="controls" aria-hidden="false">
+        <div id="readTodayBox" class="read-today" title="Cards read today" aria-live="polite">📘 <span id="readTodayCount">0</span></div>
+        <button id="hintTTS" class="btn btn-light btn-circle" title="Pronounce word" aria-label="Pronounce word">💬</button>
+        <button id="shuffleBtn" class="btn btn-light btn-circle" title="Shuffle / Restart" aria-label="Shuffle or restart">🔀</button>
+        <button id="soundBtn" class="btn btn-light btn-circle" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+      </div>
+
+      <div class="anim-flip" id="wordEl" aria-live="polite">
+        <div class="word" id="wordText">शब्द</div>
+      </div>
+
+      <div class="hint" id="hint">क्लिक करें / स्पेस दबाएँ — अगले शब्द के लिए</div>
+      <div class="footer-note" id="progress">0 / 0</div>
+    </div>
+  </div>
+
+<script>
+/* ==========================
+   STATIC DATA: levels & words
+   Edit these lists directly as you need.
+   Keep keys as identifiers (shown as levels in UI).
+   ========================== */
+const data = {
+  'level-1': {
+    label: 'Level 1 — Simple 2-letter (no matra)',
+    words: [
+      "हम","तुम","आदमी","लड़का","लड़की","नदी","घर","घर","दिन","रात","आग","आँख"
+    ]
+  },
+  'level-2': {
+    label: 'Level 2 — 2-letter with आ (ा)',
+    words: [
+      "माँ","पापा","बात","रात","बाड़","चाचा","भाई","दादा","काका","चाय"
+    ]
+  },
+  'level-3': {
+    label: 'Level 3 — 2–3 letters, mixed vowels',
+    words: [
+      "खाना","पीना","सोना","पानी","पेड़","फल","सब्ज़ी","नया","पुराना","कहानी","किताब"
+    ]
+  },
+  'level-4': {
+    label: 'Level 4 — Longer / complex words',
+    words: [
+      "परिवर्तन","प्रदर्शन","समझना","hii","विशेष","आवश्यकता","परिवार","विद्यालय","शिक्षक","स्वागत","संगीत","मनोरंजन"
+    ]
+  }
+};
+
+/* ============
+   App state & refs
+   ============ */
+const overlay = document.getElementById('levelOverlay');
+const levelGrid = document.getElementById('levelGrid');
+const mainStage = document.getElementById('mainStage');
+
+const card = document.getElementById('card');
+const wordElWrapper = document.getElementById('wordEl');
+const wordText = document.getElementById('wordText');
+const hint = document.getElementById('hint');
+const progress = document.getElementById('progress');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const soundBtn = document.getElementById('soundBtn');
+const hintTTS = document.getElementById('hintTTS');
+const readTodayCountEl = document.getElementById('readTodayCount');
+
+/* ============
+   LocalStorage helpers
+   ============ */
+function todayKey() {
+  const d = new Date();
+  return 'hindi_flash_' + d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function levelKey() { return 'hindi_flash_level'; }
+
+function readTodayGet() { try{ return parseInt(localStorage.getItem(todayKey())||'0',10);}catch(e){return 0;} }
+function readTodaySet(n) { try{ localStorage.setItem(todayKey(), String(n)); }catch(e){} }
+
+/* ============
+   Voice / TTS
+   ============ */
+const supportsSpeechSynthesis = typeof window.speechSynthesis !== 'undefined';
+let availableVoices = [];
+let preferHindiVoice = null;
+function populateVoices() {
+  if(!supportsSpeechSynthesis) return;
+  availableVoices = window.speechSynthesis.getVoices() || [];
+  preferHindiVoice = availableVoices.find(v => /hi|hin|hi-IN/i.test(v.lang)) || null;
+}
+populateVoices();
+if(supportsSpeechSynthesis) window.speechSynthesis.onvoiceschanged = populateVoices;
+
+function speakAsync(text, timeoutMs = 4500) {
+  return new Promise((resolve) => {
+    if(!supportsSpeechSynthesis) { resolve({ok:false, reason:'no-tts'}); return; }
+    try {
+      try { window.speechSynthesis.cancel(); } catch(e){}
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = preferHindiVoice ? preferHindiVoice.lang : 'hi-IN';
+      if(preferHindiVoice) u.voice = preferHindiVoice;
+      u.rate = 0.95; u.pitch = 1.05;
+      let finished = false;
+      const onEnd = () => { if(finished) return; finished = true; cleanup(); resolve({ok:true}); };
+      const onErr = () => { if(finished) return; finished = true; cleanup(); resolve({ok:false,reason:'error'}); };
+      function cleanup(){ u.onend = u.onerror = null; clearTimeout(tout); }
+      u.onend = onEnd; u.onerror = onErr;
+      window.speechSynthesis.speak(u);
+      const tout = setTimeout(()=>{ if(finished) return; finished = true; try{ window.speechSynthesis.cancel(); }catch(e){}; cleanup(); resolve({ok:false, reason:'timeout'}); }, timeoutMs);
+    } catch(e){ resolve({ok:false, reason:'exception'}); }
+  });
+}
+
+/* ============
+   Sound ding
+   ============ */
+let soundOn = true;
+soundBtn.addEventListener('click', (e) => { soundOn = !soundOn; soundBtn.textContent = soundOn ? '🔊' : '🔈'; e.stopPropagation(); });
+function playDing() {
+  if(!soundOn) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const o1 = ctx.createOscillator(), g1 = ctx.createGain();
+    o1.type='sine'; o1.frequency.value = 880; g1.gain.value = 0.0001;
+    o1.connect(g1); g1.connect(ctx.destination);
+    g1.gain.setValueAtTime(0.0001, now); g1.gain.exponentialRampToValueAtTime(0.06, now+0.005); g1.gain.exponentialRampToValueAtTime(0.0001, now+0.24);
+    o1.start(now); o1.stop(now+0.25);
+    const o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o2.type='square'; o2.frequency.value = 1760; g2.gain.value = 0.0001;
+    o2.connect(g2); g2.connect(ctx.destination);
+    g2.gain.setValueAtTime(0.0001, now); g2.gain.exponentialRampToValueAtTime(0.03, now+0.002); g2.gain.exponentialRampToValueAtTime(0.0001, now+0.12);
+    o2.start(now); o2.stop(now+0.13);
+    setTimeout(()=>{ try{ ctx.close(); }catch(e){} }, 700);
+  } catch(e){}
+}
+
+/* ============
+   Level selection UI (static keys derived from data)
+   ============ */
+function showLevelOverlay() {
+  levelGrid.innerHTML = '';
+  Object.keys(data).forEach(key => {
+    const item = data[key];
+    const btn = document.createElement('button');
+    btn.className = 'level-btn';
+    btn.type = 'button';
+    btn.innerHTML = `<div>${item.label}</div><small>${item.words.length} words</small>`;
+    btn.addEventListener('click', () => {
+      selectLevel(key);
+    });
+    levelGrid.appendChild(btn);
+  });
+  overlay.style.display = 'flex';
+  mainStage.setAttribute('aria-hidden', 'true');
+}
+function hideLevelOverlay() {
+  overlay.style.display = 'none';
+  mainStage.setAttribute('aria-hidden', 'false');
+}
+
+/* ============
+   App navigation: back/forward stacks (max 5)
+   ============ */
+const HISTORY_MAX = 5;
+let currentLevelKey = null;
+let levelWords = []; // words of selected level
+let backStack = [];   // stack of indices previously seen (older at 0, newest at end). top = end()
+let forwardStack = []; // stack of indices that were reached by going back (top = end)
+let currentIndex = null; // index in levelWords that is currently visible
+let isSpeakingOrAdvancing = false;
+
+/* Utility: show word by index with animation & optionally update progress */
+function showWordIndex(idx, { animate = true } = {}) {
+  const text = (typeof idx === 'number' && idx >= 0 && idx < levelWords.length) ? levelWords[idx] : '';
+  if(!text) return;
+  if(animate) {
+    wordElWrapper.classList.add('out');
+    setTimeout(()=>{
+      wordText.textContent = text;
+      wordElWrapper.classList.remove('out');
+      wordElWrapper.classList.add('in');
+      void wordElWrapper.offsetWidth;
+      setTimeout(()=> wordElWrapper.classList.add('show'), 10);
+      setTimeout(()=> wordElWrapper.classList.remove('in','show'), 360);
+    }, 120);
+  } else {
+    wordText.textContent = text;
+  }
+  // update progress (history length shows how many unique forward advances we have)
+  progress.textContent = `${Math.min(backStack.length + (currentIndex!==null?1:0), 9999)} / ${levelWords.length}`;
+}
+
+/* choose a random index from levelWords excluding optional exclude index */
+function randomIndexExcluding(excludeIdx) {
+  if(levelWords.length === 0) return null;
+  if(levelWords.length === 1) return 0;
+  let idx;
+  let attempts = 0;
+  do {
+    idx = Math.floor(Math.random() * levelWords.length);
+    attempts++;
+  } while(idx === excludeIdx && attempts < 12);
+  if(idx === excludeIdx) {
+    // fallback: pick (excludeIdx+1) mod length
+    idx = (excludeIdx + 1) % levelWords.length;
+  }
+  return idx;
+}
+
+/* Advance flow when the user requests "next" (click / space / right):
+   1) If there's no current card -> generate a new random (no TTS).
+   2) Otherwise: forced speak current word, then:
+      - If forwardStack not empty -> pop from forwardStack and show it (preserve order). This is NOT counted as new read.
+      - Else -> generate a new random index, show it, increment read-today.
+   Maintain stacks: when moving forward to a new random, push previous current to backStack (trim to 5) and clear forwardStack.
+   When moving forward using forwardStack, push previous current to backStack (trim to 5).
+*/
+async function userRequestedNext() {
+  if(isSpeakingOrAdvancing) return;
+  // if no current card, just advance to new random (no TTS)
+  if(currentIndex === null) {
+    advanceToNewRandom();
+    return;
+  }
+
+  isSpeakingOrAdvancing = true;
+  try {
+    // forced speak current
+    await speakAsync(levelWords[currentIndex], 4500).catch(()=>{});
+  } finally {
+    // proceed to next (either forwardStack or new random)
+    if(forwardStack.length > 0) {
+      // go forward from forwardStack
+      const nextIdx = forwardStack.pop();
+      // push current to backStack
+      if(currentIndex !== null) {
+        backStack.push(currentIndex);
+        if(backStack.length > HISTORY_MAX) backStack.shift();
+      }
+      currentIndex = nextIdx;
+      showWordIndex(currentIndex, { animate: true });
+      // pronounce the new card after showing
+      try { await speakAsync(levelWords[currentIndex], 3500); } catch(e){}
+      playDing();
+      // note: not incrementing read-today when moving through forward stack
+    } else {
+      // no forward history — generate a new random card
+      advanceToNewRandom();
+    }
+    isSpeakingOrAdvancing = false;
+  }
+}
+
+/* advanceToNewRandom: generate a new random index, push previous current to backStack, clear forwardStack,
+   update read-today (increment), show & play ding & (optionally) auto-pronounce
+*/
+function advanceToNewRandom() {
+  if(levelWords.length === 0) return;
+  const prev = currentIndex;
+  const next = randomIndexExcluding(prev);
+  // push prev into backStack (if exists)
+  if(prev !== null) {
+    backStack.push(prev);
+    if(backStack.length > HISTORY_MAX) backStack.shift();
+  }
+  // clear forwardStack (new branch)
+  forwardStack = [];
+  currentIndex = next;
+  showWordIndex(currentIndex, { animate: true });
+  // increment read-today
+  const nowCount = readTodayGet() + 1;
+  readTodaySet(nowCount);
+  readTodayCountEl.textContent = nowCount;
+  // play ding and optionally pronounce new card automatically? we will NOT auto-pronounce to avoid overlap.
+  setTimeout(()=> playDing(), 220);
+}
+
+/* User requested "back" (Left Arrow) behavior:
+   - If backStack empty -> nothing.
+   - Else: move current to forwardStack (if exists), pop previous from backStack to current, show it, pronounce it.
+   - Do not increment read-today when going back.
+*/
+async function userRequestedBack() {
+  if(isSpeakingOrAdvancing) return;
+  if(backStack.length === 0) return; // nothing to go back to
+  isSpeakingOrAdvancing = true;
+  try {
+    const prevIdx = backStack.pop(); // the one to show
+    // push current into forwardStack (if exists)
+    if(currentIndex !== null) {
+      forwardStack.push(currentIndex);
+      if(forwardStack.length > HISTORY_MAX) forwardStack.shift();
+    }
+    currentIndex = prevIdx;
+    showWordIndex(currentIndex, { animate: true });
+    // pronounce the shown card
+    try { await speakAsync(levelWords[currentIndex], 4500); } catch(e){}
+    playDing();
+  } finally {
+    isSpeakingOrAdvancing = false;
+  }
+}
+
+/* hint button: pronounce current card on demand (no navigation) */
+if(!supportsSpeechSynthesis) {
+  hintTTS.title = 'Pronunciation unavailable';
+  hintTTS.disabled = true;
+  hintTTS.style.opacity = 0.6;
+  hintTTS.textContent = '❌';
+} else {
+  hintTTS.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(currentIndex === null) return;
+    // speak current
+    speakAsync(levelWords[currentIndex], 3500).catch(()=>{});
+  });
+}
+
+/* Shuffle / restart: clear stacks and create fresh random state for level */
+shuffleBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  // clear stacks and current, then advance to new random (no forced TTS)
+  backStack = [];
+  forwardStack = [];
+  currentIndex = null;
+  // show blank and then new
+  wordText.textContent = '';
+  setTimeout(()=> advanceToNewRandom(), 120);
+});
+
+/* Keyboard / click wiring */
+card.addEventListener('click', () => userRequestedNext());
+window.addEventListener('keydown', (e) => {
+  if(e.code === 'Space' || e.code === 'ArrowRight') {
+    e.preventDefault();
+    userRequestedNext();
+  } else if(e.code === 'ArrowLeft') {
+    e.preventDefault();
+    userRequestedBack();
+  } else if(e.code === 'KeyR') {
+    // restart
+    backStack = []; forwardStack = []; currentIndex = null; advanceToNewRandom();
+  }
+});
+
+/* make card focusable for Enter */
+card.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') {
+    e.preventDefault();
+    userRequestedNext();
+  }
+});
+card.setAttribute('tabindex','0');
+
+/* Read-today init */
+readTodayCountEl.textContent = readTodayGet();
+
+/* Date rollover safety — refresh displayed readToday if day changes */
+let lastTodayKey = todayKey();
+setInterval(()=> {
+  const k = todayKey();
+  if(k !== lastTodayKey) {
+    readTodayCountEl.textContent = readTodayGet();
+    lastTodayKey = k;
+  }
+}, 60*1000);
+
+/* Level selection - persist chosen level to localStorage */
+function selectLevel(key) {
+  if(!data[key]) return;
+  localStorage.setItem(levelKey(), key);
+  currentLevelKey = key;
+  levelWords = Array.isArray(data[key].words) ? data[key].words.slice() : [];
+  hideLevelOverlay();
+  // initialize stacks and show first card
+  backStack = []; forwardStack = []; currentIndex = null;
+  readTodayCountEl.textContent = readTodayGet();
+  // show stage
+  mainStage.style.display = 'flex';
+  overlay.style.display = 'none';
+  setTimeout(()=> advanceToNewRandom(), 180);
+}
+
+/* Build level selection buttons from static data keys */
+function initLevelGrid() {
+  levelGrid.innerHTML = '';
+  Object.keys(data).forEach(k => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'level-btn';
+    btn.innerHTML = `<div>${data[k].label}</div><small>${data[k].words.length} words</small>`;
+    btn.addEventListener('click', ()=> selectLevel(k));
+    levelGrid.appendChild(btn);
+  });
+}
+
+/* On load: show overlay unless a saved level exists */
+window.addEventListener('load', () => {
+  initLevelGrid();
+  const saved = localStorage.getItem(levelKey());
+  if(saved && data[saved]) {
+    // auto-select and start
+    selectLevel(saved);
+  } else {
+    // show overlay
+    overlay.style.display = 'flex';
+    mainStage.style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
