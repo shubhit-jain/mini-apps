@@ -68,7 +68,11 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 ### 📚 Hindi Flash Cards (`apps/flash-cards-app/`)
 - **Goal**: Practice reading Hindi words across multiple levels
 - **Entry point**: `index-hindi.html`, linked through `meta.json`
-- Keep the imported app self-contained; no refactor needed for index integration
+- **Audience**: Children aged 10 and younger; select levels by reading ability
+- **Word banks**: 50 / 100 / 200 / 200 unique words; Level 2 mixes आ, इ and ई
+- **Practice**: Draw all words before repeats; progress measures exposure, not mastery
+- **Learning guide**: `apps/flash-cards-app/README.md` has classification rules, full word lists and research sources
+- **Validation**: `npm test` checks word banks and practice behavior
 
 ### ⚡ Speed Math (`apps/speed-math/`)
 - **Audience**: Tweens (10–14)
