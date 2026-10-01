@@ -14,7 +14,7 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 ## Stack
 - **Server**: Node.js + Express (local dev only)
 - **Live reload**: livereload + connect-livereload + nodemon
-- **Styling/JS**: CDN imports (Tailwind, Alpine, etc.) — no build step
+- **Styling/JS**: compiled Tailwind CSS for the index and Speed Math; other app styles and Alpine load as needed
 - **Storage**: localStorage or URL params (no backend DB)
 - **Deployment**: GitHub Pages via `docs/` folder (static build)
 
@@ -35,9 +35,10 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 ## Dev Workflow
 1. `npm run dev` — start Express + live-reload at http://localhost:6767
 2. Create/edit apps under `apps/<name>/` — changes live-reload automatically
+3. After changing Tailwind utility classes in the index or Speed Math, run `npm run css:build`
 
 ## Deploy to GitHub Pages
-1. `npm run build` — regenerates `docs/` from current `apps/`
+1. `npm run build` — compiles Tailwind CSS and regenerates `docs/` from current `apps/`
 2. Commit and push `docs/` to main
 3. GitHub Pages serves from `docs/` on main branch
 
