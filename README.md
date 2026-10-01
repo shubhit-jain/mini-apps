@@ -45,4 +45,6 @@ GitHub Pages is configured to deploy from the `docs/` folder on `main`.
 
 4. GitHub Pages deploys automatically after the push. Wait for the `pages build and deployment` run in the repository's **Actions** tab to finish, then check the live site.
 
+The build also writes [`docs/sitemap.xml`](docs/sitemap.xml) with the index and all app URLs. For Google discovery, submit `https://shubhit-jain.github.io/mini-apps/sitemap.xml` in Search Console for the site property. A sitemap helps discovery but does not guarantee indexing or a position in search results.
+
 For initial setup, open **Settings → Pages**, choose **Deploy from a branch**, and select **main** with **/docs** as the folder.

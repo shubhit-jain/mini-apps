@@ -14,6 +14,7 @@ const path = require('path');
 const ROOT = __dirname;
 const DOCS = path.join(ROOT, 'docs');
 const APPS_DIR = path.join(ROOT, 'apps');
+const SITE_URL = 'https://shubhit-jain.github.io/mini-apps/';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -80,7 +81,13 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mini Apps</title>
+  <title>Mini Apps | Free Browser Games &amp; Learning Tools</title>
+  <meta name="description" content="Play free browser mini apps, including Hindi flash cards for kids, Speed Math, guessing games, Minecraft Adventure, and UNO. No account needed." />
+  <link rel="canonical" href="${SITE_URL}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mini Apps | Free Browser Games &amp; Learning Tools" />
+  <meta property="og:description" content="Play free browser games and learning tools, including Hindi flash cards for kids, Speed Math, and more." />
+  <meta property="og:url" content="${SITE_URL}" />
   <link rel="stylesheet" href="shared/tailwind.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -106,7 +113,7 @@ const html = `<!DOCTYPE html>
 
     <div class="mb-12">
       <h1 class="text-4xl font-bold text-slate-800 mb-2">Mini Apps</h1>
-      <p class="text-slate-500 text-lg">A growing collection of fun little tools.</p>
+      <p class="text-slate-500 text-lg">Free browser games and learning tools, including Hindi flash cards, Speed Math, and more.</p>
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2">
@@ -120,6 +127,16 @@ const html = `<!DOCTYPE html>
 `;
 
 fs.writeFileSync(path.join(DOCS, 'index.html'), html);
+
+// Include the canonical home page and every linked app in a discoverable sitemap.
+const sitemapUrls = [SITE_URL, ...apps.map(app => new URL(`apps/${app.slug}/${app.entry}`, SITE_URL).href)];
+const escapeXml = value => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&apos;' })[char]);
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.map(url => `  <url><loc>${escapeXml(url)}</loc></url>`).join('\n')}
+</urlset>
+`;
+fs.writeFileSync(path.join(DOCS, 'sitemap.xml'), sitemap);
 
 console.log(`✓ Built ${apps.length} app(s) → docs/`);
 apps.forEach(a => console.log(`  ${a.emoji}  ${a.title}  →  docs/apps/${a.slug}/`));
