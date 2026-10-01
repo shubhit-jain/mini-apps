@@ -27,29 +27,53 @@
       width:min(760px,92vw); height:min(440px,62vh); max-height:560px;
       display:flex; align-items:center; justify-content:center; border-radius:20px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-      background: radial-gradient(1200px 500px at 10% 10%, rgba(255,255,255,0.6), transparent),
-                  var(--card-bg);
+      background:var(--card-bg);
       position:relative; cursor:pointer; overflow:hidden; -webkit-tap-highlight-color: transparent;
       user-select:none; -webkit-user-select:none;
     }
-    .card-flash::before, .card-flash::after { content:""; position:absolute; width:220px; height:220px; border-radius:50%; z-index:0; filter:blur(14px); opacity:0.35; }
-    .card-flash::before { left:-80px; top:-60px; background: linear-gradient(135deg,var(--accent),#ffa9a9); }
-    .card-flash::after { right:-80px; bottom:-60px; background: linear-gradient(135deg,var(--accent2),#8ee5d1); }
+    .card-flash::before, .card-flash::after { content:""; position:absolute; pointer-events:none; z-index:0; }
+    .card-flash::before {
+      inset:-45%; border-radius:50%;
+      background:conic-gradient(from 0deg, rgba(255,90,95,.55), transparent 72deg, transparent 150deg, rgba(0,166,153,.55) 180deg, transparent 252deg, transparent 330deg, rgba(255,90,95,.55));
+      filter:blur(40px); animation:cardGlowOrbit 32s linear infinite;
+    }
+    .card-flash::after { inset:0; background:radial-gradient(ellipse at center, rgba(255,255,255,.98) 0%, rgba(255,255,255,.96) 34%, rgba(255,255,255,.5) 70%, transparent 100%); }
+    @keyframes cardGlowOrbit { to { transform:rotate(360deg); } }
+    .page-hidden .card-flash::before { animation-play-state:paused; }
 
-    .word { z-index:2; font-size: clamp(36px,8vw,116px); font-weight:700; text-align:center; padding:0 1rem; color:#222; display:inline-block; }
+    .word { z-index:2; font-size:clamp(45px,10vw,145px); font-weight:700; text-align:center; padding:0 1rem; color:#222; display:inline-block; max-width:100%; overflow-wrap:anywhere; line-height:1.2; }
 
 
     .controls { position:absolute; top:12px; right:12px; z-index:3; display:flex; gap:0.5rem; align-items:center; }
     .btn-circle { width:44px; height:44px; padding:0; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(0,0,0,0.12); font-size:18px; background:white; }
 
-    .anim-flip { transition: transform 260ms cubic-bezier(.2,.9,.3,1), opacity 160ms ease; transform-origin:center; will-change:transform,opacity; }
+    .anim-flip { position:relative; z-index:2; max-width:100%; min-width:0; transition: transform 260ms cubic-bezier(.2,.9,.3,1), opacity 160ms ease; transform-origin:center; will-change:transform,opacity; }
     .anim-flip.out { transform: rotateX(20deg) scale(0.88) translateY(8px); opacity:0; }
     .anim-flip.in { transform: rotateX(-18deg) scale(1.02); opacity:0; }
     .anim-flip.in.show { transform: rotateX(0deg) scale(1); opacity:1; }
 
     .levels-button { position:absolute; z-index:3; left:12px; top:12px; border-radius:12px; font-weight:600; box-shadow:0 6px 14px rgba(0,0,0,0.12); }
 
-    .read-today { font-size:13px; padding:6px 10px; border-radius:12px; background:rgba(255,255,255,0.9); box-shadow:0 6px 10px rgba(0,0,0,0.06); color:#333; display:inline-flex; gap:8px; align-items:center; font-weight:600; }
+    .read-today { font-size:13px; padding:6px 10px; border:0; border-radius:12px; background:rgba(255,255,255,0.9); box-shadow:0 6px 10px rgba(0,0,0,0.06); color:#333; display:inline-flex; gap:8px; align-items:center; font-weight:600; cursor:pointer; }
+    .read-today:focus-visible { outline:3px solid #557b46; outline-offset:3px; }
+
+    .activity-overlay { position:fixed; inset:0; z-index:10001; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(36,49,39,.45); backdrop-filter:blur(6px); }
+    .activity-overlay[hidden] { display:none; }
+    .activity-card { width:min(440px,100%); max-height:calc(100dvh - 40px); overflow:auto; padding:24px; border-radius:22px; background:#fffdf6; box-shadow:0 24px 70px rgba(20,30,20,.25); color:#27392e; }
+    .activity-header { display:flex; align-items:start; justify-content:space-between; gap:12px; }
+    .activity-header h2 { font-size:24px; line-height:1.2; margin:0; }
+    .activity-header p { margin:6px 0 0; color:#637064; font-size:14px; }
+    .activity-close { background:#ecf0e5; border:0; border-radius:10px; width:36px; height:36px; font-size:23px; line-height:1; color:#314d38; }
+    .activity-grid { display:grid; grid-template-rows:repeat(7,36px); grid-template-columns:repeat(4,minmax(0,1fr)); grid-auto-flow:column; gap:8px; margin:24px 0 14px; }
+    .activity-day { border:1px solid rgba(39,57,46,.08); border-radius:7px; padding:0 4px; background:#e8ede3; color:#647064; font-size:11px; font-weight:600; cursor:pointer; }
+    .activity-day[data-intensity="1"] { background:#bad4ac; }
+    .activity-day[data-intensity="2"] { background:#84b678; }
+    .activity-day[data-intensity="3"] { background:#4c8b5c; }
+    .activity-day[data-intensity="4"] { background:#276942; }
+    .activity-day[data-intensity="2"], .activity-day[data-intensity="3"], .activity-day[data-intensity="4"] { color:rgba(255,255,255,.82); }
+    .activity-day[data-today="true"] { outline:2px solid #243f31; outline-offset:2px; }
+    .activity-day:focus-visible, .activity-close:focus-visible { outline:3px solid #243f31; outline-offset:2px; }
+    .activity-detail { margin:0; min-height:1.5em; font-size:14px; font-weight:600; text-align:center; }
 
     .footer-note { position:absolute; bottom:10px; right:14px; z-index:2; font-size:12px; color:#333; opacity:0.85; }
 
@@ -69,7 +93,7 @@
     .level-text { grid-column:1; grid-row:1; display:flex; flex-direction:column; gap:8px; }
     .level-name { font-size:21px; font-weight:700; margin:0; line-height:1.3; }
     .level-subtitle { font-size:clamp(24px,3vw,30px); font-weight:650; line-height:1.5; }
-    @media (prefers-reduced-motion:reduce) { .level-btn, .anim-flip { transition:none; } }
+    @media (prefers-reduced-motion:reduce) { .level-btn, .anim-flip { transition:none; } .card-flash::before { animation:none; } }
 
     @media (max-width:520px) {
       .card-flash { border-radius:14px; }
@@ -79,7 +103,7 @@
       .level-card { padding:22px 18px; border-radius:22px; }
       .level-grid { grid-template-columns:1fr; gap:12px; margin-top:20px; }
       .level-btn { padding:18px; }
-      .word { font-size:clamp(32px,8vw,50px); }
+      .word { font-size:clamp(40px,10vw,62.5px); }
     }
   </style>
 </head>
@@ -105,7 +129,7 @@
       <button id="levelsBtn" type="button" class="btn btn-light levels-button" aria-haspopup="dialog" aria-controls="levelOverlay">Levels</button>
 
       <div class="controls" aria-hidden="false">
-        <div id="readTodayBox" class="read-today" title="Cards shown today across all levels, including repeats" aria-live="polite">📘 Today <span id="readTodayCount">0</span></div>
+        <button id="readTodayBox" type="button" class="read-today" title="Show the last 28 days of cards" aria-label="Show activity for the last 28 days" aria-haspopup="dialog" aria-controls="activityOverlay">📘 Today <span id="readTodayCount">0</span></button>
         <button id="hintTTS" class="btn btn-light btn-circle" title="Pronounce word" aria-label="Pronounce word">💬</button>
         <button id="shuffleBtn" class="btn btn-light btn-circle" title="Shuffle / Restart" aria-label="Shuffle or restart">🔀</button>
         <button id="soundBtn" class="btn btn-light btn-circle" title="Mute all audio" aria-label="Mute all audio" aria-pressed="true">🔊</button>
@@ -116,6 +140,20 @@
       </div>
 
       <div class="footer-note" id="progress">0 / 0</div>
+    </div>
+  </div>
+
+  <div id="activityOverlay" class="activity-overlay" role="dialog" aria-modal="true" aria-labelledby="activityTitle" hidden>
+    <div class="activity-card">
+      <div class="activity-header">
+        <div>
+          <h2 id="activityTitle">Last 28 days</h2>
+          <p>Your progress each day</p>
+        </div>
+        <button id="closeActivityBtn" type="button" class="activity-close" aria-label="Close activity">×</button>
+      </div>
+      <div id="activityGrid" class="activity-grid" aria-label="Daily card activity"></div>
+      <p id="activityDetail" class="activity-detail" aria-live="polite"></p>
     </div>
   </div>
 
@@ -749,18 +787,79 @@ const shuffleBtn = document.getElementById('shuffleBtn');
 const soundBtn = document.getElementById('soundBtn');
 const hintTTS = document.getElementById('hintTTS');
 const readTodayCountEl = document.getElementById('readTodayCount');
+const readTodayBox = document.getElementById('readTodayBox');
+const activityOverlay = document.getElementById('activityOverlay');
+const activityGrid = document.getElementById('activityGrid');
+const activityDetail = document.getElementById('activityDetail');
+const closeActivityBtn = document.getElementById('closeActivityBtn');
 
 /* ============
    LocalStorage helpers
    ============ */
-function todayKey() {
-  const d = new Date();
+function dateKey(d) {
   return 'hindi_flash_' + d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
+function todayKey() { return dateKey(new Date()); }
 function levelKey() { return 'hindi_flash_level'; }
 
-function readTodayGet() { try{ return parseInt(localStorage.getItem(todayKey())||'0',10);}catch(e){return 0;} }
+function readCountForDate(date) {
+  try {
+    const value = Number.parseInt(localStorage.getItem(dateKey(date)) || '0', 10);
+    return Number.isFinite(value) ? Math.max(0, value) : 0;
+  } catch(e) { return 0; }
+}
+function readTodayGet() { return readCountForDate(new Date()); }
 function readTodaySet(n) { try{ localStorage.setItem(todayKey(), String(n)); }catch(e){} }
+function recentActivity(today = new Date()) {
+  const days = [];
+  const localNoon = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
+  for(let offset = 27; offset >= 0; offset--) {
+    const date = new Date(localNoon);
+    date.setDate(localNoon.getDate() - offset);
+    const count = readCountForDate(date);
+    const intensity = count === 0 ? 0 : count < 10 ? 1 : count < 30 ? 2 : count < 60 ? 3 : 4;
+    days.push({ date, count, intensity, isToday:offset === 0 });
+  }
+  return days;
+}
+function renderActivity() {
+  activityGrid.replaceChildren();
+  const days = recentActivity();
+  const formatDate = new Intl.DateTimeFormat('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  const formatTileDate = new Intl.DateTimeFormat('en-IN', { day:'numeric', month:'short' });
+  for(const day of days) {
+    const dateLabel = formatDate.format(day.date);
+    const label = `${dateLabel}: ${day.count} ${day.count === 1 ? 'card' : 'cards'} shown`;
+    const cell = document.createElement('button');
+    cell.type = 'button';
+    cell.className = 'activity-day';
+    cell.dataset.intensity = String(day.intensity);
+    if(day.isToday) cell.dataset.today = 'true';
+    cell.setAttribute('aria-label', label);
+    cell.title = label;
+    cell.textContent = formatTileDate.format(day.date);
+    cell.addEventListener('click', () => { activityDetail.textContent = label; });
+    activityGrid.appendChild(cell);
+  }
+  const today = days[days.length - 1];
+  activityDetail.textContent = `${formatDate.format(today.date)}: ${today.count} ${today.count === 1 ? 'card' : 'cards'} shown`;
+}
+function showActivity() {
+  renderActivity();
+  activityOverlay.hidden = false;
+  mainStage.inert = true;
+  closeActivityBtn.focus();
+}
+function hideActivity() {
+  activityOverlay.hidden = true;
+  mainStage.inert = false;
+  readTodayBox.focus();
+}
+readTodayBox.addEventListener('click', (event) => { event.stopPropagation(); showActivity(); });
+closeActivityBtn.addEventListener('click', hideActivity);
+document.addEventListener('visibilitychange', () => {
+  document.body.classList.toggle('page-hidden', document.hidden);
+});
 
 /* ============
    Voice / TTS
@@ -1069,6 +1168,16 @@ card.addEventListener('click', (e) => {
     : userRequestedNext();
 });
 window.addEventListener('keydown', (e) => {
+  if(!activityOverlay.hidden) {
+    if(e.key === 'Escape') { e.preventDefault(); hideActivity(); }
+    if(e.key === 'Tab') {
+      const first = closeActivityBtn;
+      const last = activityGrid.lastElementChild || first;
+      if(e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    return;
+  }
   if(overlay.style.display !== 'none') {
     if(e.key === 'Escape' && currentLevelKey) {
       hideLevelOverlay();

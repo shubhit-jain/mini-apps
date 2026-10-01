@@ -41,6 +41,15 @@ State lives in the browser (localStorage) or URL (for shareable/small state).
 2. Commit and push `docs/` to main
 3. GitHub Pages serves from `docs/` on main branch
 
+## Commit Messages
+- For a single substantive change, use a single-line commit message.
+- For multiple substantive changes, use a concise summary line followed by a blank line and a bulleted list in the commit body.
+- Each bullet must be one line, clearly describing a major feature, change or fix in concrete technical language.
+- Capture the user's stated reason for a change when provided, connecting that human insight to the relevant change.
+- Omit minor polish, incidental fixes and obvious implementation details. Do not pad the list with routine work.
+- Do not mention validation results, passed checks or new tests in commit messages.
+- Describe the final changes; omit conversational history and abandoned approaches.
+
 ## Common UI Requirements (all apps)
 - **Shared base CSS**: `<link rel="stylesheet" href="../../shared/base.css" />` (first, before app's own CSS)
   - `public/shared/base.css` holds structural-only styles; apps override colours in their own CSS

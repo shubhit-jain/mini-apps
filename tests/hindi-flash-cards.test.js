@@ -13,17 +13,21 @@ function loadApp({ speech = false, savedSound = null } = {}) {
   const audio = { spoken: [], cancellations: 0 };
   function element() {
     const handlers = new Map();
+    const children = [];
     return {
       style: { display: 'none' }, classList: { add() {}, remove() {} },
-      textContent: '', innerHTML: '', hidden: false,
+      textContent: '', innerHTML: '', hidden: false, dataset: {}, children,
       handlers,
       addEventListener(event, handler) { handlers.set(event, handler); }, setAttribute() {}, focus() {},
       getBoundingClientRect() { return { left: 100, width: 400 }; },
-      appendChild() {}, querySelector() { return null; },
+      appendChild(child) { children.push(child); }, replaceChildren() { children.length = 0; },
+      get lastElementChild() { return children.at(-1) || null; },
+      querySelector() { return null; },
     };
   }
   const context = vm.createContext({
     document: {
+      addEventListener() {}, body: { classList: { toggle() {} } },
       getElementById(id) {
         if (!elements.has(id)) elements.set(id, element());
         return elements.get(id);
@@ -163,4 +167,30 @@ test('left-quarter taps review; the boundary and rest move forward without butto
   const current = app.run('currentIndex');
   await click({ detail: 1, clientX: 101, target: { closest: () => ({}) } });
   assert.equal(app.run('currentIndex'), current);
+});
+
+test('28-day activity reads daily counts across a month boundary', () => {
+  const app = loadApp();
+  app.storage.set('hindi_flash_2025-12-06', '3');
+  app.storage.set('hindi_flash_2026-01-02', '126');
+  const days = app.run('recentActivity(new Date(2026, 0, 2))');
+  assert.equal(days.length, 28);
+  assert.equal(days[0].date.getDate(), 6);
+  assert.equal(days[0].date.getMonth(), 11);
+  assert.equal(days[0].count, 3);
+  assert.equal(days[1].count, 0);
+  assert.equal(days.at(-1).count, 126);
+  assert.equal(days.at(-1).intensity, 4);
+});
+
+test('Today opens a 28-cell activity view with dates and can close it', () => {
+  const app = loadApp();
+  app.run('showActivity();');
+  assert.equal(app.elements.get('activityGrid').children.length, 28);
+  assert.match(app.elements.get('activityGrid').children.at(-1).textContent, /\d+ \w+/);
+  assert.equal(app.elements.get('activityOverlay').hidden, false);
+  assert.equal(app.elements.get('mainStage').inert, true);
+  app.run('hideActivity();');
+  assert.equal(app.elements.get('activityOverlay').hidden, true);
+  assert.equal(app.elements.get('mainStage').inert, false);
 });
